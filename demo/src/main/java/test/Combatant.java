@@ -12,7 +12,6 @@ public class Combatant {
     //sent out 
     CombatantInfo combatantInfo;
     CombatantInfo enemyCombatant;
-    private List<Skill> debuffList = new ArrayList<>();
     private List<Skill> allSkills = new ArrayList<>();
     HashMap<String, Boolean> uptimeDic = new HashMap<>();
     // friendly vars
@@ -62,8 +61,12 @@ public class Combatant {
         uptimeDic.put("poison",false);
         uptimeDic.put("lacerate",false);
         uptimeDic.put("heal",false);
-        uptimeDic.put("shieldUptime",false);
+        uptimeDic.put("absorption",false);
         uptimeDic.put("shieldGranted",false);
+        uptimeDic.put("heal",false);
+        uptimeDic.put("lessUnits",false);
+        uptimeDic.put("moreUnits",false);
+        uptimeDic.put("Silence",false);
         totalCounter.reset();
         //roundEndReset(); // resets all values
     }
@@ -196,27 +199,23 @@ public class Combatant {
     // runs buff effects for your troops, then exchange phase
     public void roundInitialisation() {
         numberEnemyAttackers = 0; // for counterattack scaling logic
-        runBuffEffects();
+        //runBuffEffects();
     }
 
     //Start Phase ticks rounds, adds actives and triggered set
     public void startPhase(CombatantInfo enemyCombatant) {
+        //runBuffEffects();
         this.enemyCombatant = enemyCombatant;
-        // find uptimes
-        runBuffEffects();
-
+        // find uptimes, runs buffs and the bases for triggered set
         for (String damageEffectUptime : SkillDatabase.damageEffectSet) {
             uptimeDic.put(damageEffectUptime, enemyCombatant.isEffectActive(damageEffectUptime));
             //if (combatantId == 0) { System.out.println(damageEffectUptime + " " + enemyCombatant.isEffectActive(damageEffectUptime)); }
         }
-        uptimeDic.put("shieldUptime",combatantInfo.isAbsorptionActive());
-
-        if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active"); 
-            //System.out.println("active main triggered");
-        }
-        if (combatantInfo.getSecondaryActive()) { triggeredSet.add("activeSecondary");triggeredSet.add("active"); 
-            //System.out.println("active secondary triggered");
-        }
+        uptimeDic.put("absorption", combatantInfo.isAbsorptionActive());
+        if (combatantInfo.getTroopCount() > enemyCombatant.getTroopCount()) { uptimeDic.put("moreUnits",true); }
+        if (combatantInfo.getTroopCount() < enemyCombatant.getTroopCount()) { uptimeDic.put("moreUnits",true); }
+        if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active"); }
+        if (combatantInfo.getSecondaryActive()) { triggeredSet.add("activeSecondary");triggeredSet.add("active"); }
 
         double enemyEvasion = enemyCombatant.getEvasion(); // evasion prevents damage but not triggers
         if (Math.random() > enemyEvasion) {
@@ -235,7 +234,13 @@ public class Combatant {
                     if (Math.random() < enemyEvasion && !SkillDatabase.baseTypeSet.contains(skill.getEffectType())) { continue; }
                 }
 
-                if (skill.getEffectType().equalsIgnoreCase("directDamage")) { countDamageFactor(skill); }
+                if (skill.getEffectType().equalsIgnoreCase("directDamage")) {
+                    switch (skill.getEffectType()) {
+                        case "directDamage" -> countDamageFactor(skill);
+                        case "absorption" -> countAbsorptionFactor(skill);
+                        case "heal" -> countHealFactor(skill);
+                    }
+                }
                 else if (SkillDatabase.baseTypeSet.contains(skill.getEffectType())) {
                     buffEffects.add(new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude()));
                 }
@@ -292,6 +297,18 @@ public class Combatant {
         endRoundReset();
     }
 
+    private void countAbsorptionFactor(Skill skill) {
+        StatusEffect shield = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), Scaler.scale((skill.getMagnitude()*(1+absorptionDealtIncrease)),combatantInfo.getAttack(),combatantInfo.getTroopCount()));
+        totalCounter.addAbsorptionFactor(skill.getMagnitude()*(1+absorptionDealtIncrease));
+        combatantInfo.addAbsorption(shield);
+    }
+
+    private void countHealFactor(Skill skill) {
+        StatusEffect heal = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude()*(1+healDealtIncrease));
+        totalCounter.addHealFactor(skill.getMagnitude()*(1+healDealtIncrease));
+        buffEffects.add(heal);
+    }
+
     private void endRoundReset() {
         triggeredSet.clear();
         basicAttackDamage=0;
@@ -309,16 +326,14 @@ public class Combatant {
         lacerateDamageIncrease=0;
         numberEnemyAttackers=0;
     }
-    private void runDebuffEffects() {
-        for (Skill debuff : debuffList) {
-
-        }
-    }
 
     private void runBuffEffects() {
+        System.out.println(combatantInfo.getRound());
+        uptimeDic.put("heal",false);
         for (StatusEffect effect : buffEffects) {
             switch (effect.getType()) {
-                case "rage" -> { combatantInfo.addRage(effect.getMagnitude()); }
+                case "heal" -> { combatantInfo.addHeal(Scaler.scale(effect.getMagnitude(),combatantInfo.getAttack(),combatantInfo.getTroopCount())); uptimeDic.put("heal",true);}
+                case "rage" -> combatantInfo.addRage(effect.getMagnitude());
                 case "burnDealtIncrease" -> burnDamageIncrease += effect.getMagnitude();
                 case "poisonDealtIncrease" -> poisonDamageIncrease += effect.getMagnitude();
                 case "bleedDealtIncrease" -> bleedDamageIncrease += effect.getMagnitude();
@@ -351,6 +366,7 @@ public class Combatant {
             case "cooperation" -> additionalDealt += cooperationDealtIncrease;
             case "passive" -> additionalDealt += passiveDealtIncrease;
             case "counterattack" -> additionalDealt += counterattackDealtIncrease;
+            case "active" -> additionalDealt += 0; // add in active damage increases
             case "N/A" -> {}
             default -> System.out.println("Unknown category specification: " + skill.getCategorySpecification());
         }

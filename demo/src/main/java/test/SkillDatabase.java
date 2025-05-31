@@ -22,8 +22,6 @@ public class SkillDatabase {
     static {
         baseTypeSet = new HashSet<>(List.of(
             "evasion",
-            "absorption",
-            "heal",
             "retribution",
             "rage",
             "attackBoost",

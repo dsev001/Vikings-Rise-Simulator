@@ -17,6 +17,8 @@ public class DebuffEffectCollection {
     double healthDamp;
     double rageDamp;
 
+    // need to add silence logic !!!
+    
     public double getTotalDamage() { return damageTotal; }
     public double getAttackDamp() { return attackDamp; }
     public double getDefenseDamp() { return defenseDamp; }

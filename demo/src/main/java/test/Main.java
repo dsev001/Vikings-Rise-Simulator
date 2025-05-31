@@ -36,7 +36,7 @@ public class Main {
         //simulate.runRound(1);
         //System.out.println(simulate.getFactorPerSecond());
         //groupRoundSimulator(30,simulate);
-        simulate.runVerseRound(1000000);
+        simulate.runVerseRound(100000);
         System.out.println(simulate.getFactorPerSecond());
         //System.out.println(simulate.getAllSkills());
     }
@@ -61,7 +61,7 @@ public class Main {
                     double threadTotal = 0;
                     Simulator localSim = new Simulator();
                     localSim.setNewCombatant(100, 50, 200, 10,
-                            "Alf", "Olena",
+                            "Sephina", "Olena",
                             "Fiery Rage", "Poison Arrow", "Bone Corroding Arrow",
                             "First Strike", "N/A", "N/A",
                             "N/A", "N/A");
