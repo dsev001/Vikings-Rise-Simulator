@@ -18,6 +18,7 @@ public class SkillDatabase {
     public static HashSet<String> baseTypeSet;
     public static HashSet<String> localKeptSet;
     public static HashSet<String> damageEffectSet;
+    public static HashSet<String> debuffEffectSet; // non damaging debuffs lie slow
 
     static {
         baseTypeSet = new HashSet<>(List.of(
@@ -50,6 +51,11 @@ public class SkillDatabase {
             "bleedDamage",
             "poisonDamage",
             "lacerateDamage"
+        ));
+
+        debuffEffectSet = new HashSet<>(List.of(
+            "slow",
+            "silence"
         ));
 
         ObjectMapper objectMapper = new ObjectMapper();

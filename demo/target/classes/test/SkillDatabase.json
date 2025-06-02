@@ -238,7 +238,7 @@
       "dependent": "Fiery Rage Burn",
       "categorySpecification": "cooperation",
       "effectType": "burnDamage",
-      "triggerRequirement": "N/A",
+      "triggerRequirement": "burnDamage",
       "magnitude": 350,
       "skillDuration": 2,
       "triggerChance": 1,
@@ -593,6 +593,19 @@
       "magnitude": 0.5,
       "skillDuration": 2,
       "triggerChance": 0.25,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0
+    },
+    {
+      "name": "Bloodthirst Gaze",
+      "dependent": "active",
+      "categorySpecification": "cooperation",
+      "effectType": "rage",
+      "triggerRequirement": "N/A",
+      "magnitude": 150,
+      "skillDuration": 1,
+      "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
       "cooldown": 0

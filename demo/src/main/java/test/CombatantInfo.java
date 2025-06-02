@@ -74,12 +74,7 @@ public class CombatantInfo {
     // methods
     public void tickRound() {
         // tick the round
-        if (rage >= 1000) {
-            rage = 0;
-            activeCounter = 0;
-        } else { rage += 100; }
         round++;
-        activeCounter++;
         troopCount+=troopChange;
         List<StatusEffect> expired = new ArrayList<>();
         for (StatusEffect absorptionEffect : absorptionList) {
@@ -107,6 +102,14 @@ public class CombatantInfo {
         defenseBoost -= debuffEffectCollection.getDefenseDamp();
         healthBoost -= debuffEffectCollection.getHealthDamp();
         debuffEffectCollection.tickAll();
+    }
+
+    public void tickRage() {
+        if (rage + 100 >= 1000) {
+            rage = 0;
+            activeCounter = 0;
+        } else { rage += 100; }
+        activeCounter++;
     }
 
     public void addRage (double rage) { this.rage += rage; }

@@ -1,12 +1,6 @@
 package test;
 // should add something for graphing
 //import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
@@ -16,19 +10,26 @@ public class Main {
 
         //need input validation
         Simulator simulate = new Simulator();
-        simulate.setNewCombatant(100, 50, 200, 100000,
+        simulate.setNewCombatant(300, 200, 100, 100000,
         "Alf", "Olena",
-        "Fiery Rage", "Poison Arrow", "Bone Corroding Arrow",
-        "First Strike", "N/A", "N/A", 
+        "Fiery Rage", "Bone Corroding Arrow", "Poison Arrow",
+        "First Strike", "Bloodthirst Gaze", "N/A", 
         "N/A", "N/A");
+
         
-        /*
-        simulate.setNewEnemyCombatant(100, 50, 200, 100000,
-        "Alf", "Olena",
-        "First Strike", "Poison Arrow", "Bone Corroding Arrow",
+        simulate.setNewEnemyCombatant(300, 200, 100, 100000,
+        "Sephina", "N/A",
+        "First Strike", "Poison Arrow", "N/A",
         "N/A", "N/A", "N/A", 
         "N/A", "N/A");
-        */
+
+        simulate.setNewEnemyCombatant(300, 200, 100, 100000,
+        "Sephina", "N/A",
+        "First Strike", "Poison Arrow", "N/A",
+        "N/A", "N/A", "N/A", 
+        "N/A", "N/A");
+        
+        
         
         int round = 5;
         double total = 0;
@@ -36,11 +37,13 @@ public class Main {
         //simulate.runRound(1);
         //System.out.println(simulate.getFactorPerSecond());
         //groupRoundSimulator(30,simulate);
-        simulate.runVerseRound(100000);
+        simulate.runVerseRound(1000000);
         System.out.println(simulate.getFactorPerSecond());
+
         //System.out.println(simulate.getAllSkills());
     }
 
+    /*
     private static void groupRoundSimulator(int maxRounds, Simulator simulate) {
         List<Double> totalList = new ArrayList<>();
         long startTime = System.nanoTime();
@@ -92,4 +95,5 @@ public class Main {
         double durationMillis = (endTime - startTime) / 1_000_000.0;
         System.out.printf("Simulation completed in %.2f ms (%.2f seconds)%n", durationMillis, durationMillis / 1000.0);
     }
+    */
 }

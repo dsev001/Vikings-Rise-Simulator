@@ -45,6 +45,8 @@ public class Simulator {
         return total;
     }
     
+
+
     public void runVerseRound(int rounds){
         //List<Double> friendlyDamageList = new ArrayList<>();
         //List<Double> enemyDamageList = new ArrayList<>();
@@ -62,14 +64,12 @@ public class Simulator {
         friendlyBasics = 0;
         enemyBasics = 0;
         for (Combatant combatant: combatantList){
-            combatant.roundInitialisation();
             CombatantInfo holderCombatantInfo = combatant.getCombatantInfo();
             if (holderCombatantInfo.getBasicAttackCheck()) { friendlyBasics+=1; }
             friendlyCombatantsInfo.add(holderCombatantInfo);
         }
 
         for (Combatant combatant: enemyCombatantList){
-            combatant.roundInitialisation();
             CombatantInfo holderCombatantInfo = combatant.getCombatantInfo();
             if (holderCombatantInfo.getBasicAttackCheck()) { enemyBasics+=1; }
             enemyCombatantsInfo.add(holderCombatantInfo);
@@ -83,6 +83,12 @@ public class Simulator {
             combatantList.get(0).setNumberEnemyAttackers(enemyBasics);
             enemyCombatantList.get(0).setNumberEnemyAttackers(friendlyBasics);
 
+            for (Combatant friendlyCombatant : combatantList) {
+                friendlyCombatant.roundInitialisation();
+            }
+            for (Combatant enemyCombatant : enemyCombatantList) {
+                enemyCombatant.roundInitialisation();
+            }
             // does basic attacks hitting the friendly main
             for (Combatant enemyCombatant : enemyCombatantList) {
                 enemyCombatant.startPhase(friendlyCombatantsInfo.get(0));
@@ -111,9 +117,16 @@ public class Simulator {
             for (int iter = 0; iter < combatantList.size(); iter++) {
                 combatantList.get(iter).setCombatantInfo(friendlyCombatantsInfo.get(iter));
                 combatantList.get(iter).endPhase();
+            }
+
+            for (int iter = 0; iter < enemyCombatantList.size(); iter++) {
                 enemyCombatantList.get(iter).setCombatantInfo(enemyCombatantsInfo.get(iter));
                 enemyCombatantList.get(iter).endPhase();
             }
         }
+    }
+
+    private void roundCombat() {
+
     }
 }

@@ -76,50 +76,15 @@ public class Skill {
 
     public boolean shouldTrigger(int round, HashMap<String, Boolean> uptimeDic, Set<String> triggeredSet) {
         if (!dependent.equalsIgnoreCase("N/A") && !triggeredSet.contains(dependent)) {return false;} //for skills triggering on other skills
-        switch (triggerRequirement) {
-            case "burnDamage" -> {
-                if (uptimeDic.get("burnDamage")) {
-                    return checkTrigger(round);
-                } else {return false; }
-            }
-            case "bleedDamage" -> {
-                if (uptimeDic.get("bleedDamage")) {
-                    return checkTrigger(round);
-                } else {return false; }
-            }
-            case "poisonDamage" -> {
-                if (uptimeDic.get("poisonDamage")) {
-                    return checkTrigger(round);
-                } else {return false; }
-            }
-            case "lacerateDamage" -> {
-                if (uptimeDic.get("lacerateDamage")) {
-                    return checkTrigger(round);
-                } else {return false; }
-            }
-            case "heal" -> {
-                if (uptimeDic.get("heal")) {
-                    return checkTrigger(round);
-                } else {return false; }
-            }
-            case "shield" -> {
-                if (uptimeDic.get("shieldUptime")) { // check this
-                    return checkTrigger(round);
-                } else {return false; }
-            }
-            case "shieldGranted" -> {
-                if (uptimeDic.get("shieldGranted")) { // need to add
-                    return checkTrigger(round);
-                } else {return false; }
-            }
-            case "N/A" -> {
+        if (triggerRequirement.equals("N/A")) { return checkTrigger(round); }
+        try { 
+            if (uptimeDic.get(triggerRequirement)) {
                 return checkTrigger(round);
-            }
-            default -> {
-                System.out.println("Unknown trigger requirement: " + triggerRequirement);
-                System.out.println("check for error");
-                return false;
-            }
+            } else { return false; }
+        } catch (Exception e) {
+            System.out.println("Unknown trigger requirement: " + triggerRequirement);
+            System.out.println("check for error");
+            return false;
         }
     }
 
