@@ -11,13 +11,13 @@ import java.util.Set;
 public class DebuffEffectCollection {
     private HashMap<Integer, List<StatusEffect>> effectsById = new HashMap<>();
     private HashMap<String, Boolean> activeEffectTypes = new HashMap<>();
+    private HashMap<String, Double> idStatusDamageStorer = new HashMap<>();
+
     double damageTotal;
     double attackDamp;
     double defenseDamp;
     double healthDamp;
     double rageDamp;
-
-    // need to add silence logic !!!
     
     public double getTotalDamage() { return damageTotal; }
     public double getAttackDamp() { return attackDamp; }
@@ -27,9 +27,7 @@ public class DebuffEffectCollection {
     public boolean isEffectActive(String type) { return activeEffectTypes.getOrDefault(type, false); }
 
     public void removeEffectRandom() {
-        // Collect all active effects into a single list along with their parent ID
-        // We'll use a custom small class or just a pair to hold both.
-        // For simplicity here, let's collect all effects first, then find their origin.
+
         List<StatusEffect> allEffects = new ArrayList<>();
         for (List<StatusEffect> effectList : effectsById.values()) {
             allEffects.addAll(effectList);
@@ -79,9 +77,17 @@ public class DebuffEffectCollection {
     }
 
 
-    public void addEffect(int id, StatusEffect effect) {
-        effectsById.computeIfAbsent(id, k -> new ArrayList<>()).add(effect);
-        activeEffectTypes.put(effect.getType(), true);
+    public void addEffect(int id, StatusEffect newEffect) {
+        List<StatusEffect> effectList = effectsById.computeIfAbsent(id, k -> new ArrayList<>());
+
+        // Remove any effect with the same name
+        effectList.removeIf(effect -> effect.getName().equals(newEffect.getName()));
+
+        // Add the new or updated effect
+        effectList.add(newEffect);
+
+        // Ensure the effect type is marked as active
+        activeEffectTypes.put(newEffect.getType(), true);
     }
 
     public void tickAll() {
@@ -133,6 +139,8 @@ public class DebuffEffectCollection {
                         case "defenseDamp" -> defenseDamp+=effect.getMagnitude();
                         case "healthDamp" -> healthDamp+=effect.getMagnitude();
                         case "rageDamp" -> rageDamp+=effect.getMagnitude();
+                        //default -> System.out.println(effect.getType());
+                        // add debuff clearing, silence done elsewhere
                     }
                 }
             }

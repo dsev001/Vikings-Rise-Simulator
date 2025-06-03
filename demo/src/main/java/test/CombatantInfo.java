@@ -54,8 +54,10 @@ public class CombatantInfo {
     public double getRetribution() { return retribution; }
 
     public boolean getBasicAttackCheck() { return basicAttackCheck; }
-    public boolean getMainActive() { return activeCounter == 1; }
-    public boolean getSecondaryActive() { return activeCounter == 3; }
+    public boolean getMainActive() { return activeCounter == 1 && !debuffEffectCollection.isEffectActive("silence"); }
+    public boolean getSecondaryActive() { return activeCounter == 3 && !debuffEffectCollection.isEffectActive("silence"); }
+    public boolean checkEvasion() { return evasion != 0; }
+    public boolean checkRetribution() { return retribution != 0; }
 
     // constructor
     public CombatantInfo(int troopCount, double attack, double defense, double health) {
@@ -74,6 +76,7 @@ public class CombatantInfo {
     // methods
     public void tickRound() {
         // tick the round
+        //System.out.println(troopChange);
         round++;
         troopCount+=troopChange;
         List<StatusEffect> expired = new ArrayList<>();
@@ -105,11 +108,12 @@ public class CombatantInfo {
     }
 
     public void tickRage() {
+        //System.out.println(activeCounter);
         if (rage + 100 >= 1000) {
             rage = 0;
             activeCounter = 0;
         } else { rage += 100; }
-        activeCounter++;
+        if (!debuffEffectCollection.isEffectActive("silence")) { activeCounter++; }
     }
 
     public void addRage (double rage) { this.rage += rage; }

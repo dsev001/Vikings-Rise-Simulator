@@ -9,10 +9,12 @@ public class TotalCounter {
     private double statusFactorTotal; // sub part of damage factor total, from status damage
     private double counterAttackDamageTotal;
     private int evasionConstant = 3000;
-    private int retributionConstant = 3000;
+    private int retributionConstant = 3500;
     private int nullificationContant = 3000;
     private int brokenBladeConstant = 1000; // add a change when flanking?
 
+    // issue with counting status effects fix later doesn't effect combat just FPS averages
+    
     public TotalCounter() {
         accumulatedFactorTotal=0;
         damageFactorTotal=0;
@@ -43,7 +45,7 @@ public class TotalCounter {
     public void addCounterAttackDamage(double val){counterAttackDamageTotal+=val;}
     public void addNullification(double val){reductionFactorTotal+=val*nullificationContant;}
     public void addEvasion(double val){reductionFactorTotal+=val*evasionConstant;}
-    public void addRetribution(double val){reductionFactorTotal+=val*retributionConstant;}
+    public void addRetribution(double val){damageFactorTotal+=val*retributionConstant;}
     public void addBrokenBlade(double val){reductionFactorTotal+=val*brokenBladeConstant;}
 
     public void reset() {

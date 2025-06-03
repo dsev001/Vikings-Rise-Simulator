@@ -11,23 +11,29 @@ public class Main {
         //need input validation
         Simulator simulate = new Simulator();
         simulate.setNewCombatant(300, 200, 100, 100000,
-        "Alf", "Olena",
+        "Sephina", "Olena",
         "Fiery Rage", "Bone Corroding Arrow", "Poison Arrow",
         "First Strike", "Bloodthirst Gaze", "N/A", 
         "N/A", "N/A");
-
         
+        
+        simulate.setNewEnemyCombatant(3000, 2000, 100, 100000,
+        "Sephina", "Olena",
+        "Fiery Rage", "Bone Corroding Arrow", "Poison Arrow",
+        "First Strike", "Bloodthirst Gaze", "N/A", 
+        "N/A", "N/A");
+        
+        
+        simulate.runFights();
+        //simulate.runVerseRound(100000);
+        //simulate.getFactorPerSecond();
+        /*
         simulate.setNewEnemyCombatant(300, 200, 100, 100000,
         "Sephina", "N/A",
         "First Strike", "Poison Arrow", "N/A",
         "N/A", "N/A", "N/A", 
         "N/A", "N/A");
-
-        simulate.setNewEnemyCombatant(300, 200, 100, 100000,
-        "Sephina", "N/A",
-        "First Strike", "Poison Arrow", "N/A",
-        "N/A", "N/A", "N/A", 
-        "N/A", "N/A");
+        */
         
         
         
@@ -37,8 +43,8 @@ public class Main {
         //simulate.runRound(1);
         //System.out.println(simulate.getFactorPerSecond());
         //groupRoundSimulator(30,simulate);
-        simulate.runVerseRound(1000000);
-        System.out.println(simulate.getFactorPerSecond());
+        //simulate.runVerseRound(1000000);
+        //System.out.println(simulate.getFactorPerSecond());
 
         //System.out.println(simulate.getAllSkills());
     }

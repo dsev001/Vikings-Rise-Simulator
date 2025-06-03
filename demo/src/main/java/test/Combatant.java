@@ -56,10 +56,6 @@ public class Combatant {
         combatantInfo.setRage(0);
         combatantInfo.setRound(1);
         combatantInfo.setActiveCounter(4);
-        uptimeDic.put("burn",false);
-        uptimeDic.put("bleed",false);
-        uptimeDic.put("poison",false);
-        uptimeDic.put("lacerate",false);
         uptimeDic.put("heal",false);
         uptimeDic.put("absorption",false);
         uptimeDic.put("shieldGranted",false);
@@ -182,15 +178,16 @@ public class Combatant {
     //setters and getters
     public void setCombatantInfo(CombatantInfo combatantInfo) { this.combatantInfo = combatantInfo; }
     public double getFactorPerSecond(){ 
-        /*
-        System.out.println("Absorption Factor Total: " + totalCounter.getAbsorptionFactorTotal());
-        System.out.println("Accumulated Factor Total: " + totalCounter.getAccumulatedFactorTotal());
-        System.out.println("Counter Attack Damage Total: " + totalCounter.getCounterAttackDamageTotal());
-        System.out.println("Damage Factor Total: " + totalCounter.getDamageFactorTotal());
-        System.out.println("Heal Factor Total: " + totalCounter.getHealFactorTotal());
-        System.out.println("Reduction Factor Total: " + totalCounter.getReductionFactorTotal());
-        System.out.println("Status Factor Total: " + totalCounter.getStatusFactorTotal());
-        */
+        
+        double rounds = (double)combatantInfo.getRound() - 1;
+        System.out.println("Absorption Factor Total per Second: " + totalCounter.getAbsorptionFactorTotal() / rounds);
+        System.out.println("Accumulated Factor Total per Second: " + totalCounter.getAccumulatedFactorTotal() / rounds);
+        System.out.println("Counter Attack Damage Total per Second: " + totalCounter.getCounterAttackDamageTotal() / rounds);
+        System.out.println("Damage Factor Total per Second: " + totalCounter.getDamageFactorTotal() / rounds);
+        System.out.println("Heal Factor Total per Second: " + totalCounter.getHealFactorTotal() / rounds);
+        System.out.println("Reduction Factor Total per Second: " + totalCounter.getReductionFactorTotal() / rounds);
+        System.out.println("Status Factor Total per Second: " + totalCounter.getStatusFactorTotal() / rounds);
+        
         
         return totalCounter.getAccumulatedFactorTotal() / ((double)combatantInfo.getRound()-1);
     }
@@ -230,11 +227,13 @@ public class Combatant {
         }
 
         uptimeDic.put("absorption", combatantInfo.isAbsorptionActive());
+        uptimeDic.put("retribution", combatantInfo.checkRetribution());
+        uptimeDic.put("evasion",combatantInfo.checkEvasion());
         //System.out.println("Rage" + combatantInfo.getRage());
         if (combatantInfo.getTroopCount() > enemyCombatant.getTroopCount()) { uptimeDic.put("moreUnits",true); }
         if (combatantInfo.getTroopCount() < enemyCombatant.getTroopCount()) { uptimeDic.put("moreUnits",true); }
         if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active"); }
-        if (combatantInfo.getSecondaryActive()) { triggeredSet.add("activeSecondary");triggeredSet.add("active"); }
+        if (combatantInfo.getSecondaryActive()) { triggeredSet.add("activeSecondary");triggeredSet.add("active");}
 
         double enemyEvasion = enemyCombatant.getEvasion(); // evasion prevents damage but not triggers
         if (Math.random() > enemyEvasion) {
@@ -261,7 +260,7 @@ public class Combatant {
                     }
                 }
                 else if (SkillDatabase.baseTypeSet.contains(skill.getEffectType())) {
-                    buffEffects.add(new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude()));
+                    addBuffEffect(new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude()));
                 }
                 else {
                     StatusEffect debuff = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude());
@@ -281,6 +280,7 @@ public class Combatant {
                         continue;
                     }
                     enemyCombatant.addDebuffEffect(combatantId,debuff);
+                    //System.out.println(debuff.getName()); // add better system for error cases
                 }
             }
         }
@@ -346,12 +346,17 @@ public class Combatant {
         numberEnemyAttackers=0;
     }
 
+    private void addBuffEffect(StatusEffect statusEffect) {
+        buffEffects.removeIf(effect -> effect.getName().equals(statusEffect.getName()));
+        buffEffects.add(statusEffect); // should probably replace with a hashmap for better lookup do later
+    }
+
     private void runBuffEffects() {
         uptimeDic.put("heal",false);
         for (StatusEffect effect : buffEffects) {
             switch (effect.getType()) {
                 case "heal" -> { combatantInfo.addHeal(Scaler.scale(effect.getMagnitude(),combatantInfo.getAttack(),combatantInfo.getTroopCount())); uptimeDic.put("heal",true);}
-                case "rage" -> {combatantInfo.addRage(effect.getMagnitude());}
+                case "rage" -> combatantInfo.addRage(effect.getMagnitude());
                 case "burnDealtIncrease" -> burnDamageIncrease += effect.getMagnitude();
                 case "poisonDealtIncrease" -> poisonDamageIncrease += effect.getMagnitude();
                 case "bleedDealtIncrease" -> bleedDamageIncrease += effect.getMagnitude();

@@ -37,7 +37,8 @@ public class SkillDatabase {
             "burnDealtIncrease",
             "bleedDealtIncrease",
             "poisonDealtIncrease",
-            "lacerateDealtIncrease"
+            "lacerateDealtIncrease",
+            "basicAttackDamage"
         ));
 
         localKeptSet = new HashSet<>(List.of(
@@ -51,7 +52,7 @@ public class SkillDatabase {
             "bleedDamage",
             "poisonDamage",
             "lacerateDamage"
-        ));
+            ));
 
         debuffEffectSet = new HashSet<>(List.of(
             "slow",

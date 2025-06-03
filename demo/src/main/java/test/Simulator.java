@@ -47,11 +47,64 @@ public class Simulator {
     
 
 
-    public void runVerseRound(int rounds){
-        //List<Double> friendlyDamageList = new ArrayList<>();
-        //List<Double> enemyDamageList = new ArrayList<>();
-        int friendlyBasics;
-        int enemyBasics;
+    public void runVerseRound(int rounds){     
+        setup();   
+        for (int i = 0; i < rounds; i++){
+            roundCombat();
+        }
+    }
+
+    public void runFights() {
+        if (combatantList.isEmpty() || enemyCombatantList.isEmpty()) {
+            throw new IllegalStateException("Combatant lists must be initialized before running fights.");
+        }
+
+        setup();
+
+        while (true) {
+            //System.out.println(combatantList.get(0).getCombatantInfo().getTroopCount());
+            roundCombat();
+            for (Combatant combatant: combatantList){
+                CombatantInfo holderCombatantInfo = combatant.getCombatantInfo();
+                friendlyCombatantsInfo.add(holderCombatantInfo);
+            }
+
+            for (Combatant combatant: enemyCombatantList){
+                CombatantInfo holderCombatantInfo = combatant.getCombatantInfo();
+                enemyCombatantsInfo.add(holderCombatantInfo);
+            }
+
+            for (int iter = combatantList.size() - 1; iter >= 0; iter--) {
+                Combatant combatant = combatantList.get(iter);
+                if (combatant.getCombatantInfo().getTroopCount() <= 0) {
+                    combatantList.remove(iter);
+                }
+            }
+
+            for (int iter = enemyCombatantList.size() - 1; iter >= 0; iter--) {
+                Combatant combatant = enemyCombatantList.get(iter);
+                if (combatant.getCombatantInfo().getTroopCount() <= 0) {
+                    enemyCombatantList.remove(iter);
+                }
+            }
+
+            if (combatantList.isEmpty()) {
+                for (Combatant combatant : enemyCombatantList) {
+                    System.out.println(combatant.getCombatantInfo().getTroopCount());
+                }
+                break;
+            }
+
+            if (enemyCombatantList.isEmpty()) {
+                for (Combatant combatant : combatantList) {
+                    System.out.println(combatant.getCombatantInfo().getTroopCount());
+                }
+                break;
+            }
+        }
+    }
+
+    private void setup() {
         for (Combatant combatant : combatantList) {
             combatant.reset(); //resets for when simulators called multiple times,
         }
@@ -61,72 +114,72 @@ public class Simulator {
             enemyCombatantList.add(dummy); 
         }
 
-        friendlyBasics = 0;
-        enemyBasics = 0;
         for (Combatant combatant: combatantList){
             CombatantInfo holderCombatantInfo = combatant.getCombatantInfo();
-            if (holderCombatantInfo.getBasicAttackCheck()) { friendlyBasics+=1; }
             friendlyCombatantsInfo.add(holderCombatantInfo);
         }
 
         for (Combatant combatant: enemyCombatantList){
             CombatantInfo holderCombatantInfo = combatant.getCombatantInfo();
-            if (holderCombatantInfo.getBasicAttackCheck()) { enemyBasics+=1; }
             enemyCombatantsInfo.add(holderCombatantInfo);
         }
-        
-        for (int i = 0; i < rounds; i++){
-
-            // number of attackers will default to 0 so no need to worry about flankers
-            // need to modify this slightly, for counterattacks dealt and basics recieved are dif
-
-            combatantList.get(0).setNumberEnemyAttackers(enemyBasics);
-            enemyCombatantList.get(0).setNumberEnemyAttackers(friendlyBasics);
-
-            for (Combatant friendlyCombatant : combatantList) {
-                friendlyCombatant.roundInitialisation();
-            }
-            for (Combatant enemyCombatant : enemyCombatantList) {
-                enemyCombatant.roundInitialisation();
-            }
-            // does basic attacks hitting the friendly main
-            for (Combatant enemyCombatant : enemyCombatantList) {
-                enemyCombatant.startPhase(friendlyCombatantsInfo.get(0));
-                friendlyCombatantsInfo.set(0, enemyCombatant.getEnemyCombatant());
-            }
-
-            // does basic attacks hitting the enemy main
-            for (Combatant friendlyCombatant : combatantList) {
-                friendlyCombatant.startPhase(enemyCombatantsInfo.get(0));
-                enemyCombatantsInfo.set(0, friendlyCombatant.getEnemyCombatant());
-            }
-
-            // does the friendly main counterattacking flankers
-            for (int iter = 0; iter < enemyCombatantsInfo.size(); iter++) {
-                CombatantInfo combatantInfo = enemyCombatantsInfo.get(iter);
-                combatantList.get(0).counterattackPhase(combatantInfo);
-                enemyCombatantsInfo.set(iter, combatantList.get(0).getEnemyCombatant());
-            }
-            // runs counters
-            for (int iter = 0; iter < friendlyCombatantsInfo.size(); iter++) {
-                CombatantInfo combatantInfo = friendlyCombatantsInfo.get(iter);
-                enemyCombatantList.get(0).counterattackPhase(combatantInfo);
-                friendlyCombatantsInfo.set(iter, enemyCombatantList.get(0).getEnemyCombatant());
-            }
-            //setting
-            for (int iter = 0; iter < combatantList.size(); iter++) {
-                combatantList.get(iter).setCombatantInfo(friendlyCombatantsInfo.get(iter));
-                combatantList.get(iter).endPhase();
-            }
-
-            for (int iter = 0; iter < enemyCombatantList.size(); iter++) {
-                enemyCombatantList.get(iter).setCombatantInfo(enemyCombatantsInfo.get(iter));
-                enemyCombatantList.get(iter).endPhase();
-            }
-        }
     }
-
     private void roundCombat() {
 
+        // number of attackers will default to 0 so no need to worry about flankers
+        // need to modify this slightly, for counterattacks dealt and basics recieved are dif
+        int friendlyBasics = 0;
+        int enemyBasics = 0;
+        for (CombatantInfo combatantInfo : friendlyCombatantsInfo) {
+            if (combatantInfo.getBasicAttackCheck()) { friendlyBasics++ ; }
+        }
+
+        for (CombatantInfo combatantInfo : enemyCombatantsInfo) {
+            if (combatantInfo.getBasicAttackCheck()) { enemyBasics++ ; }
+        }
+
+        combatantList.get(0).setNumberEnemyAttackers(enemyBasics);
+        enemyCombatantList.get(0).setNumberEnemyAttackers(friendlyBasics);
+
+        for (Combatant friendlyCombatant : combatantList) {
+            friendlyCombatant.roundInitialisation();
+        }
+        for (Combatant enemyCombatant : enemyCombatantList) {
+            enemyCombatant.roundInitialisation();
+        }
+        // does basic attacks hitting the friendly main
+        for (Combatant enemyCombatant : enemyCombatantList) {
+            enemyCombatant.startPhase(friendlyCombatantsInfo.get(0));
+            friendlyCombatantsInfo.set(0, enemyCombatant.getEnemyCombatant());
+        }
+
+        // does basic attacks hitting the enemy main
+        for (Combatant friendlyCombatant : combatantList) {
+            friendlyCombatant.startPhase(enemyCombatantsInfo.get(0));
+            enemyCombatantsInfo.set(0, friendlyCombatant.getEnemyCombatant());
+        }
+
+        // does the friendly main counterattacking flankers
+        for (int iter = 0; iter < enemyCombatantsInfo.size(); iter++) {
+            CombatantInfo combatantInfo = enemyCombatantsInfo.get(iter);
+            combatantList.get(0).counterattackPhase(combatantInfo);
+            enemyCombatantsInfo.set(iter, combatantList.get(0).getEnemyCombatant());
+        }
+        // runs counters
+        for (int iter = 0; iter < friendlyCombatantsInfo.size(); iter++) {
+            CombatantInfo combatantInfo = friendlyCombatantsInfo.get(iter);
+            enemyCombatantList.get(0).counterattackPhase(combatantInfo);
+            friendlyCombatantsInfo.set(iter, enemyCombatantList.get(0).getEnemyCombatant());
+        }
+        //setting
+        for (int iter = 0; iter < combatantList.size(); iter++) {
+            combatantList.get(iter).setCombatantInfo(friendlyCombatantsInfo.get(iter));
+            combatantList.get(iter).endPhase();
+        }
+
+        for (int iter = 0; iter < enemyCombatantList.size(); iter++) {
+            enemyCombatantList.get(iter).setCombatantInfo(enemyCombatantsInfo.get(iter));
+            enemyCombatantList.get(iter).endPhase();
+        }
     }
 }
