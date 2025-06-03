@@ -317,7 +317,7 @@ public class Combatant {
     }
 
     private void countAbsorptionFactor(Skill skill) {
-        StatusEffect shield = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), Scaler.scale((skill.getMagnitude()*(1+absorptionDealtIncrease)),combatantInfo.getAttack(),combatantInfo.getTroopCount()));
+        StatusEffect shield = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), Scaler.scale((skill.getMagnitude()*(1+absorptionDealtIncrease)/enemyCombatant.getDefense()),combatantInfo.getAttack(),combatantInfo.getTroopCount()));
         totalCounter.addAbsorptionFactor(skill.getMagnitude()*(1+absorptionDealtIncrease));
         combatantInfo.addAbsorption(shield);
     }
@@ -355,7 +355,7 @@ public class Combatant {
         uptimeDic.put("heal",false);
         for (StatusEffect effect : buffEffects) {
             switch (effect.getType()) {
-                case "heal" -> { combatantInfo.addHeal(Scaler.scale(effect.getMagnitude(),combatantInfo.getAttack(),combatantInfo.getTroopCount())); uptimeDic.put("heal",true);}
+                case "heal" -> { combatantInfo.addHeal(Scaler.scale(effect.getMagnitude(),combatantInfo.getAttack()/enemyCombatant.getDefense(),combatantInfo.getTroopCount())); uptimeDic.put("heal",true);}
                 case "rage" -> combatantInfo.addRage(effect.getMagnitude());
                 case "burnDealtIncrease" -> burnDamageIncrease += effect.getMagnitude();
                 case "poisonDealtIncrease" -> poisonDamageIncrease += effect.getMagnitude();

@@ -2,18 +2,14 @@ package test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-// this class is called by main to run a number of rounds & create combatants, should have logic to pass uptime data between combatant instances
+
 public class Simulator {
     HashMap<String,Boolean> uptimeDic = new HashMap<>();
     private List<Combatant> combatantList = new ArrayList<>();
     private List<Combatant> enemyCombatantList = new ArrayList<>(); 
-    private List<CombatantInfo> friendlyCombatantsInfo = new ArrayList<>();
-    private List<CombatantInfo> enemyCombatantsInfo = new ArrayList<>();
-    private int idCount = 0; // for managing status effects
+    private int idCount = 0;
     private Combatant dummy = new Combatant(100, 100, 100, 200000, "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
-    //not sure if I'll have multiple enemies, gives me some room
 
-    //add new combatants to the list
     public void setNewCombatant(double attack, double defense, double health, int troopCount, String commander1Name, String commander2Name, String skill1Name, String skill2Name, String skill3Name, String skill4Name, String mountFirstSlot1Name, String mountFirstSlot2Name, String mountSecondSlot1Name, String mountSecondSlot2Name){
         Combatant combatant = new Combatant(attack, defense, health, troopCount, commander1Name, commander2Name, skill1Name, skill2Name, skill3Name, skill4Name, mountFirstSlot1Name, mountFirstSlot2Name, mountSecondSlot1Name, mountSecondSlot2Name);
         combatant.setCombatantId(idCount);
@@ -28,7 +24,6 @@ public class Simulator {
         idCount++;
     }
 
-    //setters + getters
     public String getAllSkills() {
         String output = "";
         for (Combatant combatant : combatantList){
@@ -44,8 +39,6 @@ public class Simulator {
         }
         return total;
     }
-    
-
 
     public void runVerseRound(int rounds){     
         setup();   
@@ -62,18 +55,14 @@ public class Simulator {
         setup();
 
         while (true) {
-            //System.out.println(combatantList.get(0).getCombatantInfo().getTroopCount());
+            System.out.println("Round " + combatantList.get(0).getCombatantInfo().getRound() + 
+                             " - Friendly troops: " + combatantList.get(0).getCombatantInfo().getTroopCount());
+            System.out.println("Round " + enemyCombatantList.get(0).getCombatantInfo().getRound() + 
+                    " - Enemy troops: " + enemyCombatantList.get(0).getCombatantInfo().getTroopCount());
+            
             roundCombat();
-            for (Combatant combatant: combatantList){
-                CombatantInfo holderCombatantInfo = combatant.getCombatantInfo();
-                friendlyCombatantsInfo.add(holderCombatantInfo);
-            }
 
-            for (Combatant combatant: enemyCombatantList){
-                CombatantInfo holderCombatantInfo = combatant.getCombatantInfo();
-                enemyCombatantsInfo.add(holderCombatantInfo);
-            }
-
+            // Remove defeated combatants
             for (int iter = combatantList.size() - 1; iter >= 0; iter--) {
                 Combatant combatant = combatantList.get(iter);
                 if (combatant.getCombatantInfo().getTroopCount() <= 0) {
@@ -89,15 +78,17 @@ public class Simulator {
             }
 
             if (combatantList.isEmpty()) {
+                System.out.println("Enemy victory!");
                 for (Combatant combatant : enemyCombatantList) {
-                    System.out.println(combatant.getCombatantInfo().getTroopCount());
+                    System.out.println("Enemy remaining troops: " + combatant.getCombatantInfo().getTroopCount());
                 }
                 break;
             }
 
             if (enemyCombatantList.isEmpty()) {
+                System.out.println("Friendly victory!");
                 for (Combatant combatant : combatantList) {
-                    System.out.println(combatant.getCombatantInfo().getTroopCount());
+                    System.out.println("Friendly remaining troops: " + combatant.getCombatantInfo().getTroopCount());
                 }
                 break;
             }
@@ -106,80 +97,83 @@ public class Simulator {
 
     private void setup() {
         for (Combatant combatant : combatantList) {
-            combatant.reset(); //resets for when simulators called multiple times,
+            combatant.reset();
         }
 
         if (enemyCombatantList.isEmpty()) { 
             dummy.setCombatantId(999);
             enemyCombatantList.add(dummy); 
         }
-
-        for (Combatant combatant: combatantList){
-            CombatantInfo holderCombatantInfo = combatant.getCombatantInfo();
-            friendlyCombatantsInfo.add(holderCombatantInfo);
-        }
-
-        for (Combatant combatant: enemyCombatantList){
-            CombatantInfo holderCombatantInfo = combatant.getCombatantInfo();
-            enemyCombatantsInfo.add(holderCombatantInfo);
-        }
     }
-    private void roundCombat() {
 
-        // number of attackers will default to 0 so no need to worry about flankers
-        // need to modify this slightly, for counterattacks dealt and basics recieved are dif
+    private void roundCombat() {
+        // Count basic attackers
         int friendlyBasics = 0;
         int enemyBasics = 0;
-        for (CombatantInfo combatantInfo : friendlyCombatantsInfo) {
-            if (combatantInfo.getBasicAttackCheck()) { friendlyBasics++ ; }
+        
+        for (Combatant combatant : combatantList) {
+            if (combatant.getCombatantInfo().getBasicAttackCheck()) { 
+                friendlyBasics++; 
+            }
         }
 
-        for (CombatantInfo combatantInfo : enemyCombatantsInfo) {
-            if (combatantInfo.getBasicAttackCheck()) { enemyBasics++ ; }
+        for (Combatant combatant : enemyCombatantList) {
+            if (combatant.getCombatantInfo().getBasicAttackCheck()) { 
+                enemyBasics++; 
+            }
         }
 
-        combatantList.get(0).setNumberEnemyAttackers(enemyBasics);
-        enemyCombatantList.get(0).setNumberEnemyAttackers(friendlyBasics);
-
-        for (Combatant friendlyCombatant : combatantList) {
-            friendlyCombatant.roundInitialisation();
+        // Set number of attackers
+        if (!combatantList.isEmpty()) {
+            combatantList.get(0).setNumberEnemyAttackers(enemyBasics);
         }
-        for (Combatant enemyCombatant : enemyCombatantList) {
-            enemyCombatant.roundInitialisation();
-        }
-        // does basic attacks hitting the friendly main
-        for (Combatant enemyCombatant : enemyCombatantList) {
-            enemyCombatant.startPhase(friendlyCombatantsInfo.get(0));
-            friendlyCombatantsInfo.set(0, enemyCombatant.getEnemyCombatant());
+        if (!enemyCombatantList.isEmpty()) {
+            enemyCombatantList.get(0).setNumberEnemyAttackers(friendlyBasics);
         }
 
-        // does basic attacks hitting the enemy main
-        for (Combatant friendlyCombatant : combatantList) {
-            friendlyCombatant.startPhase(enemyCombatantsInfo.get(0));
-            enemyCombatantsInfo.set(0, friendlyCombatant.getEnemyCombatant());
+        // Round initialization
+        for (Combatant combatant : combatantList) {
+            combatant.roundInitialisation();
+        }
+        for (Combatant combatant : enemyCombatantList) {
+            combatant.roundInitialisation();
         }
 
-        // does the friendly main counterattacking flankers
-        for (int iter = 0; iter < enemyCombatantsInfo.size(); iter++) {
-            CombatantInfo combatantInfo = enemyCombatantsInfo.get(iter);
-            combatantList.get(0).counterattackPhase(combatantInfo);
-            enemyCombatantsInfo.set(iter, combatantList.get(0).getEnemyCombatant());
-        }
-        // runs counters
-        for (int iter = 0; iter < friendlyCombatantsInfo.size(); iter++) {
-            CombatantInfo combatantInfo = friendlyCombatantsInfo.get(iter);
-            enemyCombatantList.get(0).counterattackPhase(combatantInfo);
-            friendlyCombatantsInfo.set(iter, enemyCombatantList.get(0).getEnemyCombatant());
-        }
-        //setting
-        for (int iter = 0; iter < combatantList.size(); iter++) {
-            combatantList.get(iter).setCombatantInfo(friendlyCombatantsInfo.get(iter));
-            combatantList.get(iter).endPhase();
+        // Enemy attacks on friendly main (if both sides have combatants)
+        if (!combatantList.isEmpty() && !enemyCombatantList.isEmpty()) {
+            for (Combatant enemyCombatant : enemyCombatantList) {
+                enemyCombatant.startPhase(combatantList.get(0).getCombatantInfo());
+            }
         }
 
-        for (int iter = 0; iter < enemyCombatantList.size(); iter++) {
-            enemyCombatantList.get(iter).setCombatantInfo(enemyCombatantsInfo.get(iter));
-            enemyCombatantList.get(iter).endPhase();
+        // Friendly attacks on enemy main (if both sides have combatants)
+        if (!combatantList.isEmpty() && !enemyCombatantList.isEmpty()) {
+            for (Combatant friendlyCombatant : combatantList) {
+                friendlyCombatant.startPhase(enemyCombatantList.get(0).getCombatantInfo());
+            }
+        }
+
+        // Counterattacks - friendly main counterattacking enemies
+        if (!combatantList.isEmpty()) {
+            for (Combatant enemyCombatant : enemyCombatantList) {
+                combatantList.get(0).counterattackPhase(enemyCombatant.getCombatantInfo());
+            }
+        }
+
+        // Counterattacks - enemy main counterattacking friendlies
+        if (!enemyCombatantList.isEmpty()) {
+            for (Combatant friendlyCombatant : combatantList) {
+                enemyCombatantList.get(0).counterattackPhase(friendlyCombatant.getCombatantInfo());
+            }
+        }
+
+        // End phase for all combatants
+        for (Combatant combatant : combatantList) {
+            combatant.endPhase();
+        }
+
+        for (Combatant combatant : enemyCombatantList) {
+            combatant.endPhase();
         }
     }
 }
