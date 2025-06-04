@@ -34,6 +34,7 @@ public class Combatant {
     private int combatantId;
     private int initialTroopCount; // for resetting combatant info when needed
 
+
     // Constructor
     public Combatant(double attack, double defense, double health, int troopCount, String commander1Name, String commander2Name, String skill1Name, String skill2Name, String skill3Name, String skill4Name, String mountFirstSlot1Name, String mountFirstSlot2Name, String mountSecondSlot1Name, String mountSecondSlot2Name) {
         combatantInfo = new CombatantInfo(troopCount, attack, defense, health);
@@ -56,9 +57,7 @@ public class Combatant {
 
     private void internalReset() {
         combatantInfo.setTroopCount(initialTroopCount);
-        combatantInfo.setRage(0);
-        combatantInfo.setRound(1);
-        combatantInfo.setActiveCounter(4);
+        combatantInfo.resetRound();
         uptimeDic.put("heal",false);
         uptimeDic.put("absorption",false);
         uptimeDic.put("shieldGranted",false);
@@ -189,6 +188,8 @@ public class Combatant {
     public CombatantInfo getCombatantInfo() { return combatantInfo; }
     public void setNumberEnemyAttackers(int numberEnemyAttackers) { this.numberEnemyAttackers = numberEnemyAttackers; }
     public CombatantInfo getEnemyCombatant() { return enemyCombatant; }
+    public double getInitialTroopCount() { return initialTroopCount; }
+    public void setTroopCount() { combatantInfo.setTroopCount(initialTroopCount); }
     // methods
     /*
     private double computeDamage() {
@@ -224,7 +225,10 @@ public class Combatant {
         uptimeDic.put("evasion",combatantInfo.checkEvasion());
         //System.out.println("Rage" + combatantInfo.getRage());
         if (combatantInfo.getTroopCount() > enemyCombatant.getTroopCount()) { uptimeDic.put("moreUnits",true); }
-        if (combatantInfo.getTroopCount() < enemyCombatant.getTroopCount()) { uptimeDic.put("moreUnits",true); }
+        else if (combatantInfo.getTroopCount() < enemyCombatant.getTroopCount()) { uptimeDic.put("lessUnits",true); }
+        else if (Math.random() < 0.5) { uptimeDic.put("moreUnits",true); }
+        else { uptimeDic.put("lessUnits",true); } // troop sizes equal in rally sims so make it random to account for reinforce variation
+
         if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active"); }
         if (combatantInfo.getSecondaryActive()) { triggeredSet.add("activeSecondary");triggeredSet.add("active");}
 
@@ -277,6 +281,10 @@ public class Combatant {
                 }
             }
         }
+        if (combatantId == 0 && enemyCombatant.getRetributionDamage() > 0) {
+            System.out.println("hit");
+            combatantInfo.addDamageTakenPostDefense(enemyCombatant.getRetributionDamage());
+        }
     }
 
     public void counterattackPhase(CombatantInfo enemyCombatant) {
@@ -292,6 +300,8 @@ public class Combatant {
             totalCounter.addDamageFactor(damage);
             enemyCombatant.addDamageTaken(Scaler.scale(damage, combatantInfo.getAttack(), combatantInfo.getTroopCount()));
         }
+        //System.out.println(enemyCombatant.getRetributionDamage());
+        combatantInfo.addDamageTakenPostDefense(enemyCombatant.getRetributionDamage());
     }
 
     public void endPhase() {

@@ -2,22 +2,22 @@ package test;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.statistics.HistogramDataset;
+
 public class Simulator {
-    // This HashMap seems unused in the provided code snippet.
-    // HashMap<String,Boolean> uptimeDic = new HashMap<>();
     private List<Combatant> combatantList = new ArrayList<>();
     private List<Combatant> enemyCombatantList = new ArrayList<>();
     private int idCount = 0;
-    // The dummy combatant should be handled carefully. If it's meant to be a permanent
-    // placeholder when enemyList is empty, it might need to be part of the initial setup
-    // of the main enemyCombatantList, or added to the *copy* of the list in singleFight.
-    // For this fix, we assume enemyCombatantList is populated with actual enemies for runFights.
+
     private Combatant dummy = new Combatant(100, 100, 100, 200000, "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
 
-    /**
-     * Adds a new friendly combatant to the simulation.
-     * Sets the combatant's ID and its initial troop count.
-     */
     public void setNewCombatant(double attack, double defense, double health, int troopCount, String commander1Name, String commander2Name, String skill1Name, String skill2Name, String skill3Name, String skill4Name, String mountFirstSlot1Name, String mountFirstSlot2Name, String mountSecondSlot1Name, String mountSecondSlot2Name){
         Combatant combatant = new Combatant(attack, defense, health, troopCount, commander1Name, commander2Name, skill1Name, skill2Name, skill3Name, skill4Name, mountFirstSlot1Name, mountFirstSlot2Name, mountSecondSlot1Name, mountSecondSlot2Name);
         combatant.setCombatantId(idCount);
@@ -25,10 +25,6 @@ public class Simulator {
         idCount++;
     }
 
-    /**
-     * Adds a new enemy combatant to the simulation.
-     * Sets the combatant's ID and its initial troop count.
-     */
     public void setNewEnemyCombatant(double attack, double defense, double health, int troopCount, String commander1Name, String commander2Name, String skill1Name, String skill2Name, String skill3Name, String skill4Name, String mountFirstSlot1Name, String mountFirstSlot2Name, String mountSecondSlot1Name, String mountSecondSlot2Name){
         Combatant combatant = new Combatant(attack, defense, health, troopCount, commander1Name, commander2Name, skill1Name, skill2Name, skill3Name, skill4Name, mountFirstSlot1Name, mountFirstSlot2Name, mountSecondSlot1Name, mountSecondSlot2Name);
         combatant.setCombatantId(idCount);
@@ -36,10 +32,6 @@ public class Simulator {
         idCount++;
     }
 
-    /**
-     * Concatenates all skills from friendly combatants.
-     * @return A string containing all skills.
-     */
     public String getAllSkills() {
         String output = "";
         for (Combatant combatant : combatantList){
@@ -48,10 +40,6 @@ public class Simulator {
         return output;
     }
 
-    /**
-     * Calculates the total factor per second for all friendly combatants.
-     * @return The sum of factor per second for friendly combatants.
-     */
     public double getFactorPerSecond(){
         double total = 0;
         for (Combatant combatant : combatantList){
@@ -60,68 +48,60 @@ public class Simulator {
         return total;
     }
 
-    /**
-     * Runs a single verse round simulation for a specified number of rounds.
-     * Note: This method will modify the main combatant lists. If it also needs to be reusable
-     * without modifying the main lists, it would require similar modifications to `runFights`.
-     * @param rounds The number of rounds to simulate.
-     */
     public void runVerseRound(int rounds){
-        setup(); // Resets the main combatant lists to their initial state
+        setup();
         for (int i = 0; i < rounds; i++){
-            // This calls the overloaded roundCombat that operates on the main lists.
             roundCombat(combatantList, enemyCombatantList);
         }
     }
 
-    /**
-     * Runs multiple fight simulations. Each fight starts with combatants in their initial state.
-     * @param fights The number of fights to simulate.
-     * @throws IllegalStateException If combatant lists are empty.
-     */
+    public void findTrades(int rounds) {
+        if (combatantList.isEmpty() || enemyCombatantList.isEmpty()) {
+            throw new IllegalStateException("Combatant lists must be initialized before running fights.");
+        }
+        double friendlyLost = 0;
+        double enemyLost = 0;
+        setup();
+        for (int i = 0; i < rounds; i++) {
+            roundCombat(combatantList, enemyCombatantList);
+            for (Combatant combatant : combatantList) {
+                friendlyLost+=combatant.getInitialTroopCount() - combatant.getCombatantInfo().getTroopCount();
+                combatant.setTroopCount();
+            }
+            for (Combatant combatant : enemyCombatantList) {
+                enemyLost+=combatant.getInitialTroopCount() - combatant.getCombatantInfo().getTroopCount();
+                combatant.setTroopCount();
+            }
+        }
+        System.out.println("Enemies Killed Per Troop Lost: " + (enemyLost/friendlyLost));
+        System.out.println("does not consider heavy wounded conversion");
+    }
+
     public void runFights(int fights) {
         if (combatantList.isEmpty() || enemyCombatantList.isEmpty()) {
             throw new IllegalStateException("Combatant lists must be initialized before running fights.");
         }
-        int wins = 0;
-        int loss = 0;
-
+        List<Integer> results = new ArrayList<>();
         for (int i = 0; i < fights; i++) {
-            // Before each fight, reset all combatants in the main lists to their initial state.
             setup();
 
-            // Create new ArrayLists (shallow copies) for the current fight.
-            // This ensures that removing defeated combatants in singleFight doesn't affect
-            // the original combatantList and enemyCombatantList for subsequent fights.
             List<Combatant> currentFriendlyCombatants = new ArrayList<>(combatantList);
             List<Combatant> currentEnemyCombatants = new ArrayList<>(enemyCombatantList);
 
-            // Run a single fight with the copies.
-            if (singleFight(currentFriendlyCombatants, currentEnemyCombatants)) {
-                wins++;
-            } else {
-                loss++;
-            }   
+            int val = singleFight(currentFriendlyCombatants, currentEnemyCombatants);
+            results.add(val);
         }
-
-        System.out.println("Friendly Wins: " + wins);
-        System.out.println("Friendly Losses: " + loss);
+        //plotHistogram(results);
     }
 
-    /**
-     * Simulates a single fight between two lists of combatants.
-     * This method operates on the provided lists (which should be copies) and modifies them.
-     * @param currentFriendlyCombatants The list of friendly combatants for this fight.
-     * @param currentEnemyCombatants The list of enemy combatants for this fight.
-     * @return true if friendly combatants win, false otherwise.
-     */
-    private boolean singleFight(List<Combatant> currentFriendlyCombatants, List<Combatant> currentEnemyCombatants) {
+    // simulates a random fight and gets you who wins, should return troop size of winner in future
+    private int singleFight(List<Combatant> currentFriendlyCombatants, List<Combatant> currentEnemyCombatants) {
         //System.out.println(currentEnemyCombatants.get(0).getCombatantInfo().getTroopCount());
         //System.out.println(currentFriendlyCombatants.get(0).getCombatantInfo().getTroopCount());
         while (true) {
             // Perform one round of combat using the current friendly and enemy combatants.
             roundCombat(currentFriendlyCombatants, currentEnemyCombatants);
-
+            
             // Remove defeated friendly combatants from the *current* fight's list.
             // Iterate backwards to avoid ConcurrentModificationException when removing elements.
             for (int iter = currentFriendlyCombatants.size() - 1; iter >= 0; iter--) {
@@ -139,22 +119,19 @@ public class Simulator {
                 }
             }
 
-            // Check for victory conditions based on the *current* fight's lists.
+            if (currentEnemyCombatants.isEmpty() && currentFriendlyCombatants.isEmpty()) { return 0; }
+            // both depleted num troops at same time
+
             if (currentFriendlyCombatants.isEmpty()) {
-                return false; // Enemy victory
-            }
+                return currentEnemyCombatants.get(0).getCombatantInfo().getTroopCount() *-1 ;
+            } // *-1 for enemy victory
 
             if (currentEnemyCombatants.isEmpty()) {
-                return true; // Friendly victory
+                return currentFriendlyCombatants.get(0).getCombatantInfo().getTroopCount(); // Friendly victory
             }
         }
     }
 
-    /**
-     * Resets all combatants in the main `combatantList` and `enemyCombatantList`
-     * to their initial troop counts and other default states.
-     * This method is called before each fight simulation to ensure a fresh start.
-     */
     private void setup() {
         // Reset friendly combatants
         for (Combatant combatant : combatantList) {
@@ -166,27 +143,13 @@ public class Simulator {
             combatant.reset(); // Calls resetTroops and other state resets
         }
 
-        // The original dummy logic:
-        // if (enemyCombatantList.isEmpty()) { dummy.setCombatantId(999); enemyCombatantList.add(dummy); }
-        // This line permanently adds the dummy to the class's enemyCombatantList.
-        // For `runFights` to work repeatedly with original lists, this should be avoided here.
-        // If a dummy is needed when the enemy list is empty, it should be added to the *copy*
-        // of the list within `singleFight` if `currentEnemyCombatants` becomes empty.
-        // For this solution, we assume `enemyCombatantList` is populated before `runFights` is called.
     }
 
-    /**
-     * Performs one round of combat logic between two provided lists of combatants.
-     * This overloaded method allows `roundCombat` to operate on temporary lists
-     * without modifying the main class-level lists.
-     * @param friendlyCombatants The list of friendly combatants for this round.
-     * @param enemyCombatants The list of enemy combatants for this round.
-     */
+    // singular round of combat
     private void roundCombat(List<Combatant> friendlyCombatants, List<Combatant> enemyCombatants) {
         // Count basic attackers
         int friendlyBasics = 0;
         int enemyBasics = 0;
-
         for (Combatant combatant : friendlyCombatants) {
             if (combatant.getCombatantInfo().getBasicAttackCheck()) {
                 friendlyBasics++;
@@ -200,14 +163,13 @@ public class Simulator {
         }
 
         // Set number of attackers on the combatant info of the first combatant in each list.
-        // This assumes the first combatant represents the "main" target/attacker for the group.
         if (!friendlyCombatants.isEmpty()) {
             friendlyCombatants.get(0).setNumberEnemyAttackers(enemyBasics);
         }
         if (!enemyCombatants.isEmpty()) {
             enemyCombatants.get(0).setNumberEnemyAttackers(friendlyBasics);
         }
-
+        //System.out.println("Start " + friendlyCombatants.get(0).getCombatantInfo().getTroopCount());
         // Round initialization for all combatants
         for (Combatant combatant : friendlyCombatants) {
             combatant.roundInitialisation();
@@ -216,26 +178,25 @@ public class Simulator {
             combatant.roundInitialisation();
         }
 
-        // Enemy attacks on friendly main (if both sides have combatants)
         if (!friendlyCombatants.isEmpty() && !enemyCombatants.isEmpty()) {
             for (Combatant enemyCombatant : enemyCombatants) {
                 enemyCombatant.startPhase(friendlyCombatants.get(0).getCombatantInfo());
             }
         }
-
-        // Friendly attacks on enemy main (if both sides have combatants)
+        //System.out.println("Enemy attacks friendly main " + friendlyCombatants.get(0).getCombatantInfo().getTroopCount());
         if (!friendlyCombatants.isEmpty() && !enemyCombatants.isEmpty()) {
             for (Combatant friendlyCombatant : friendlyCombatants) {
                 friendlyCombatant.startPhase(enemyCombatants.get(0).getCombatantInfo());
             }
         }
-
+        //System.out.println("Friendly attacks enemy main " + friendlyCombatants.get(0).getCombatantInfo().getTroopCount());
         // Counterattacks - friendly main counterattacking enemies
         if (!friendlyCombatants.isEmpty()) {
             for (Combatant enemyCombatant : enemyCombatants) {
                 friendlyCombatants.get(0).counterattackPhase(enemyCombatant.getCombatantInfo());
             }
         }
+        //System.out.println("Friendly main counterattacks enemies " + friendlyCombatants.get(0).getCombatantInfo().getTroopCount());
 
         // Counterattacks - enemy main counterattacking friendlies
         if (!enemyCombatants.isEmpty()) {
@@ -243,6 +204,7 @@ public class Simulator {
                 enemyCombatants.get(0).counterattackPhase(friendlyCombatant.getCombatantInfo());
             }
         }
+        //System.out.println("Enemy main counterattacks friendly " + friendlyCombatants.get(0).getCombatantInfo().getTroopCount());
 
         // End phase for all combatants
         for (Combatant combatant : friendlyCombatants) {
@@ -252,14 +214,43 @@ public class Simulator {
         for (Combatant combatant : enemyCombatants) {
             combatant.endPhase();
         }
+        //System.out.println("Phase ended " + friendlyCombatants.get(0).getCombatantInfo().getTroopCount());
     }
 
-    /**
-     * Original roundCombat method. It now calls the overloaded version,
-     * operating on the class's main combatant lists.
-     * This is kept for compatibility with `runVerseRound`.
-     */
-    private void roundCombat() {
-        roundCombat(combatantList, enemyCombatantList);
+    public void plotHistogram(List<Integer> values) {
+        // Convert List<Integer> to double[]
+        double[] data = values.stream().mapToDouble(Integer::doubleValue).toArray();
+
+        // Create dataset
+        double binWidth = 5000; // Adjust based on expected troop ranges
+        double min = -100000;    // Smallest expected troop count (e.g., enemy win by 1000)
+        double max = 100000;     // Largest expected troop count (e.g., friendly win by 1000)
+        int binCount = (int)((max - min) / binWidth )+1;
+
+        HistogramDataset dataset = new HistogramDataset();
+        dataset.addSeries("Troops Left", data, binCount, min, max);
+
+
+        // Create chart
+        JFreeChart histogram = ChartFactory.createHistogram(
+            "Troop Survival Distribution",
+            "Troops Alive After Fight",
+            "Frequency",
+            dataset,
+            PlotOrientation.VERTICAL,
+            true,
+            true,
+            false
+        );
+
+        // Display chart
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Fight Result Histogram");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.add(new ChartPanel(histogram));
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
     }
 }

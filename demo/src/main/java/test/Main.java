@@ -8,23 +8,23 @@ public class Main {
         //System.out.println("Exists? " + file.exists());
         //System.out.println("Absolute path: " + file.getAbsolutePath());
 
-        //need input validation
+        //need some kind of ui later, should add validation
         Simulator simulate = new Simulator();
-        simulate.setNewCombatant(300, 300, 200, 200000,
-        "Alf", "N/A",
+        simulate.setNewCombatant(196, 205, 231, 100000,
+        "Sephina", "Vali",
+        "Silencer", "Odin's Asylum", "Enrage",
+        "N/A", "Bloodthirst Gaze", "N/A", 
+        "N/A", "N/A");       
+        //(166, 174, 198, 200000,
+        simulate.setNewEnemyCombatant(196, 205, 231, 100000,
+        "N/A", "N/A",
         "N/A", "N/A", "N/A",
         "N/A", "N/A", "N/A", 
         "N/A", "N/A");
         
-        
-        simulate.setNewEnemyCombatant(300, 300, 200, 200000,
-        "Alf", "N/A",
-        "N/A", "N/A", "N/A",
-        "N/A", "N/A", "N/A", 
-        "N/A", "N/A");
-        
-        
-        simulate.runFights(200000);
+        //simulate.findTrades(10000);
+        simulate.runFights(1);
+        //System.out.println("done");
         //simulate.runVerseRound(100000);
         //simulate.getFactorPerSecond();
         /*
@@ -48,58 +48,4 @@ public class Main {
 
         //System.out.println(simulate.getAllSkills());
     }
-
-    /*
-    private static void groupRoundSimulator(int maxRounds, Simulator simulate) {
-        List<Double> totalList = new ArrayList<>();
-        long startTime = System.nanoTime();
-        int availableThreads = Runtime.getRuntime().availableProcessors();
-        availableThreads = 1; //parallel computing seems to slow it down even after optimising json read?
-        ExecutorService executor = Executors.newFixedThreadPool(availableThreads);
-        for (int rounds = 1; rounds <= maxRounds; rounds++) {
-            final int currentRounds = rounds; // <- effectively final copy
-            int totalRepeats = 500000 / currentRounds; //2 mil rounds is getting ~ +-1
-            int chunkSize = totalRepeats / availableThreads;
-            List<Future<Double>> futures = new ArrayList<>();
-
-            for (int t = 0; t < availableThreads; t++) {
-                int start = t * chunkSize;
-                int end = (t == availableThreads - 1) ? totalRepeats : start + chunkSize;
-
-                futures.add(executor.submit(() -> {
-                    double threadTotal = 0;
-                    Simulator localSim = new Simulator();
-                    localSim.setNewCombatant(100, 50, 200, 10,
-                            "Sephina", "Olena",
-                            "Fiery Rage", "Poison Arrow", "Bone Corroding Arrow",
-                            "First Strike", "N/A", "N/A",
-                            "N/A", "N/A");
-                    // actives trigger every round
-                    for (int i = start; i < end; i++) {
-                        localSim.runVerseRound(currentRounds);
-                        threadTotal += localSim.getFactorPerSecond();
-                    }
-                    return threadTotal;
-                }));
-            }
-
-            double total = 0;
-            for (Future<Double> f : futures) {
-                try {
-                    total += f.get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            double avg = total / totalRepeats;
-            totalList.add(avg);
-            System.out.printf("Rounds: %d -> Avg FPS: %.4f%n", currentRounds, avg);
-        }
-        executor.shutdown();
-        long endTime = System.nanoTime();
-        double durationMillis = (endTime - startTime) / 1_000_000.0;
-        System.out.printf("Simulation completed in %.2f ms (%.2f seconds)%n", durationMillis, durationMillis / 1000.0);
-    }
-    */
 }

@@ -1026,9 +1026,9 @@
         "activeSkill": "N/A"
     },
     {
-        "name": "N/A",
-        "awakenedSkill": "N/A",
-        "secondarySkill": "N/A",
+        "name": "Silencer",
+        "awakenedSkill": "Silencer Direct Damage",
+        "secondarySkill": "Silencer Silence",
         "firstTalentSkill": "N/A",
         "thirdTalentSkill": "N/A",
         "sixthTalentSkill": "N/A",
@@ -1045,14 +1045,14 @@
         "activeSkill": "N/A"
     },
     {
-        "name": "N/A",
+        "name": "Odin's Asylum",
         "awakenedSkill": "N/A",
         "secondarySkill": "N/A",
         "firstTalentSkill": "N/A",
         "thirdTalentSkill": "N/A",
         "sixthTalentSkill": "N/A",
-        "otherSkill": "N/A",
-        "otherSkill2": "N/A",
+        "otherSkill": "Odin's Asylum Direct Damage",
+        "otherSkill2": "Odin's Asylum Absorption",
         "otherSkill3": "N/A",
         "otherSkill4": "N/A",
         "otherSkill5": "N/A",

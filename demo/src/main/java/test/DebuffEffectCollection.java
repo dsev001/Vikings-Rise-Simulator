@@ -11,7 +11,6 @@ import java.util.Set;
 public class DebuffEffectCollection {
     private HashMap<Integer, List<StatusEffect>> effectsById = new HashMap<>();
     private HashMap<String, Boolean> activeEffectTypes = new HashMap<>();
-    private HashMap<String, Double> idStatusDamageStorer = new HashMap<>();
 
     double damageTotal;
     double attackDamp;
@@ -60,20 +59,6 @@ public class DebuffEffectCollection {
                 }
             }
         }
-
-        // Update activeEffectTypes for the removed effect's type
-        // Check if any other effect of the same type still exists
-        boolean typeStillActive = false;
-        for (List<StatusEffect> list : effectsById.values()) {
-            for (StatusEffect effect : list) {
-                if (effect.getType().equals(effectToRemove.getType())) {
-                    typeStillActive = true;
-                    break;
-                }
-            }
-            if (typeStillActive) break;
-        }
-        activeEffectTypes.put(effectToRemove.getType(), typeStillActive);
     }
 
 
@@ -85,9 +70,6 @@ public class DebuffEffectCollection {
 
         // Add the new or updated effect
         effectList.add(newEffect);
-
-        // Ensure the effect type is marked as active
-        activeEffectTypes.put(newEffect.getType(), true);
     }
 
     public void tickAll() {
@@ -96,6 +78,8 @@ public class DebuffEffectCollection {
         defenseDamp = 0;
         healthDamp = 0;
         rageDamp = 0;
+
+        activeEffectTypes.clear();
         // We'll track types that might need to be marked inactive
         Set<String> potentiallyInactive = new HashSet<>();
 
@@ -110,26 +94,12 @@ public class DebuffEffectCollection {
                 }
             }
         }
-
-        // Recalculate effect type status
-        for (String type : potentiallyInactive) {
-            boolean stillActive = false;
-            for (List<StatusEffect> list : effectsById.values()) {
-                for (StatusEffect effect : list) {
-                    if (effect.getType().equals(type)) {
-                        stillActive = true;
-                        break;
-                    }
-                }
-                if (stillActive) break;
-            }
-            activeEffectTypes.put(type, stillActive);
-        }
     }
 
     public void runInfo() {
         for (List<StatusEffect> list : effectsById.values()) {
             for (StatusEffect effect : list) {
+                activeEffectTypes.put(effect.getType(),true);
                 if (SkillDatabase.damageEffectSet.contains(effect.getType())) {
                     damageTotal += effect.getMagnitude();
                 }

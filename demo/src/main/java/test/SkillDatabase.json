@@ -804,5 +804,70 @@
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
       "cooldown": 0
+    },
+    {
+      "name": "Silencer Direct Damage",
+      "dependent": "basicAttack",
+      "categorySpecification": "cooperation",
+      "effectType": "directDamage",
+      "triggerRequirement": "N/A",
+      "magnitude": 450,
+      "skillDuration": 0,
+      "triggerChance": 0.2,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0
+    },
+    {
+      "name": "Silencer Silence",
+      "dependent": "Silencer Direct Damage",
+      "categorySpecification": "cooperation",
+      "effectType": "silence",
+      "triggerRequirement": "N/A",
+      "magnitude": 1,
+      "skillDuration": 2,
+      "triggerChance": 1,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0
+    },
+    {
+      "name": "Odin's Asylum Direct Damage",
+      "dependent": "active",
+      "categorySpecification": "cooperation",
+      "effectType": "directDamage",
+      "triggerRequirement": "N/A",
+      "magnitude": 450,
+      "skillDuration": 0,
+      "triggerChance": 1,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0
+    },
+    {
+      "name": "Odin's Asylum Absorption",
+      "dependent": "active",
+      "categorySpecification": "cooperation",
+      "effectType": "absorption",
+      "triggerRequirement": "N/A",
+      "magnitude": 200,
+      "skillDuration": 2,
+      "triggerChance": 1,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0
+    },
+    {
+      "name": "N/A",
+      "dependent": "N/A",
+      "categorySpecification": "command",
+      "effectType": "directDamage",
+      "triggerRequirement": "N/A",
+      "magnitude": 0,
+      "skillDuration": 0,
+      "triggerChance": 0,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0
     }
   ]
