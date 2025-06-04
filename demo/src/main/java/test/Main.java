@@ -11,22 +11,22 @@ public class Main {
         //need input validation
         Simulator simulate = new Simulator();
         simulate.setNewCombatant(300, 300, 200, 200000,
-        "Sephina", "Olena",
-        "Fiery Rage", "Bone Corroding Arrow", "Poison Arrow",
-        "First Strike", "Bloodthirst Gaze", "N/A", 
+        "Alf", "N/A",
+        "N/A", "N/A", "N/A",
+        "N/A", "N/A", "N/A", 
         "N/A", "N/A");
         
         
         simulate.setNewEnemyCombatant(300, 300, 200, 200000,
-        "Sephina", "Olena",
-        "Fiery Rage", "Bone Corroding Arrow", "Poison Arrow",
-        "First Strike", "Bloodthirst Gaze", "N/A", 
+        "Alf", "N/A",
+        "N/A", "N/A", "N/A",
+        "N/A", "N/A", "N/A", 
         "N/A", "N/A");
         
         
-        //simulate.runFights();
-        simulate.runVerseRound(100000);
-        simulate.getFactorPerSecond();
+        simulate.runFights(200000);
+        //simulate.runVerseRound(100000);
+        //simulate.getFactorPerSecond();
         /*
         simulate.setNewEnemyCombatant(300, 200, 100, 100000,
         "Sephina", "N/A",

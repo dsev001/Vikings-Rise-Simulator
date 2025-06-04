@@ -51,13 +51,13 @@ public class CombatantInfo {
     public double getNullification() { return nullification; }
     public double getCounterAttackDamageReduction() { return counterAttackDamageReduction; }
     public double getEvasion() { return evasion; }
-    public double getRetribution() { return retribution; }
 
     public boolean getBasicAttackCheck() { return basicAttackCheck; }
     public boolean getMainActive() { return activeCounter == 1 && !debuffEffectCollection.isEffectActive("silence"); }
     public boolean getSecondaryActive() { return activeCounter == 3 && !debuffEffectCollection.isEffectActive("silence"); }
     public boolean checkEvasion() { return evasion != 0; }
     public boolean checkRetribution() { return retribution != 0; }
+    public double getRetributionDamage() { double holder = retributionDamage; retributionDamage=0; return holder; }
 
     // constructor
     public CombatantInfo(int troopCount, double attack, double defense, double health) {
@@ -127,8 +127,8 @@ public class CombatantInfo {
     public boolean isAbsorptionActive() { return !absorptionList.isEmpty(); }
 
     public void addDamageTaken (double scaledDamage) { 
-        retributionDamage += scaledDamage * retribution; // do a check for if this is after your own defense or not
         scaledDamage /= defense;
+        retributionDamage = scaledDamage; // done after your own defense but not health
         for (StatusEffect absorption : absorptionList) {
             double holder = absorption.getMagnitude();
             if (holder > 0) {

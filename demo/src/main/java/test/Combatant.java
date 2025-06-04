@@ -32,10 +32,12 @@ public class Combatant {
     private double lacerateDamageIncrease;
     private int numberEnemyAttackers;
     private int combatantId;
+    private int initialTroopCount; // for resetting combatant info when needed
 
     // Constructor
     public Combatant(double attack, double defense, double health, int troopCount, String commander1Name, String commander2Name, String skill1Name, String skill2Name, String skill3Name, String skill4Name, String mountFirstSlot1Name, String mountFirstSlot2Name, String mountSecondSlot1Name, String mountSecondSlot2Name) {
         combatantInfo = new CombatantInfo(troopCount, attack, defense, health);
+        initialTroopCount = troopCount;
         setupNames.put("commander1", commander1Name);
         setupNames.put("commander2", commander2Name);
         setupNames.put("skill1", skill1Name);
@@ -53,6 +55,7 @@ public class Combatant {
     public void setCombatantId(int combatantId) { this.combatantId = combatantId; }
 
     private void internalReset() {
+        combatantInfo.setTroopCount(initialTroopCount);
         combatantInfo.setRage(0);
         combatantInfo.setRound(1);
         combatantInfo.setActiveCounter(4);
@@ -72,17 +75,12 @@ public class Combatant {
     }
     
     private void createSkillsList() {
-        //long startTime = System.nanoTime();
         allSkills.clear();
-
-        // Use pre-loaded skill lookup from SkillDatabase
         Map<String, Map<String, String>> skillLookup = SkillDatabase.skillLookup;
 
         List<String> intermediaryBreakingStage = new ArrayList<>();
         boolean com1 = false;
         boolean com2 = false;
-        boolean com1check = false;
-        boolean com2check = false;
         String commander1active = "";
         String commander2active = "";
 
@@ -98,27 +96,27 @@ public class Combatant {
                 for (Map.Entry<String, String> field : skillEntry.entrySet()) {
                     String key = field.getKey();
                     String value = field.getValue();
-                    if (key.equals("name") && value.equals(setupNames.get("commander1"))) {
-                        com1 = true;
-                    }
-                    if (key.equals("name") && !value.equals(setupNames.get("commander1"))) {
+
+                    if (key.equals("name")) {
                         com1 = false;
-                    }
-                    if (key.equals("name") && value.equals(setupNames.get("commander2"))) {
-                        com2 = true;
-                    }
-                    if (key.equals("name") && !value.equals(setupNames.get("commander2"))) {
                         com2 = false;
+                        if (value.equalsIgnoreCase(setupNames.get("commander1"))) { com1 = true; }
+                        else if (value.equalsIgnoreCase(setupNames.get("commander2"))) { com2 = true; }
                     }
+
                     if (!key.equals("name") && !"N/A".equalsIgnoreCase(value)) {
                         intermediaryBreakingStage.add(value);
                         match = true;
                     }
-                    if (key.equals("awakenedSkill") && com1) {
-                        commander1active = value;
-                    }
-                    if (key.equals("awakenedSkill") && com2) {
-                        commander2active = value;
+
+                    // Assign awakened skill only if it's the correct commander and com1/com2 are true
+                    if (key.equals("awakenedSkill")) {
+                        if (com1) {
+                            commander1active = value;
+                        }
+                        if (com2) {
+                            commander2active = value;
+                        }
                     }
                 }
             }
@@ -129,26 +127,25 @@ public class Combatant {
                 System.exit(0);
             }
         }
+
         // Break down skills into further components and filters
         for (String targetName : intermediaryBreakingStage) {
             Map<String, String> skillEntry = skillLookup.get(targetName.toLowerCase());
+            boolean com1check = false; // Reset for each skill in intermediaryBreakingStage
+            boolean com2check = false; // Reset for each skill in intermediaryBreakingStage
             boolean match = false;
 
             if (skillEntry != null) {
                 for (Map.Entry<String, String> field : skillEntry.entrySet()) {
                     String key = field.getKey();
                     String value = field.getValue();
-                    if (key.equalsIgnoreCase("name") && value.equalsIgnoreCase(commander1active)) {
-                        com1check = true;
-                    }
-                    if (key.equalsIgnoreCase("name") && !value.equalsIgnoreCase(commander1active)) {
-                        com1check = false;
-                    }
-                    if (key.equalsIgnoreCase("name") && value.equalsIgnoreCase(commander2active)) {
-                        com2check = true;
-                    }
-                    if (key.equalsIgnoreCase("name") && !value.equalsIgnoreCase(commander2active)) {
-                        com2check = false;
+
+                    if (key.equalsIgnoreCase("name")) { // Check for "name" key
+                        if (value.equalsIgnoreCase(commander1active)) {
+                            com1check = true;
+                        } else if (value.equalsIgnoreCase(commander2active)) {
+                            com2check = true;
+                        }
                     }
 
                     if (!key.equals("name") && !"N/A".equalsIgnoreCase(value)) {
@@ -161,18 +158,15 @@ public class Combatant {
                         }
                         allSkills.add(skill);
                         match = true;
+                        //System.out.println("Added skill: " + skill.getName() + " with dependent: " + skill.getDependent());
                     }
                 }
             }
-
             if (!match) {
                 Skill skill = Skill.loadFromJsonByName(targetName);
                 allSkills.add(skill);
             }
         }
-
-    //long endTime = System.nanoTime();
-    //System.out.println((endTime - startTime) / 1_000_000 + " milliseconds");
     }
 
     //setters and getters
@@ -187,7 +181,6 @@ public class Combatant {
         System.out.println("Heal Factor Total per Second: " + totalCounter.getHealFactorTotal() / rounds);
         System.out.println("Reduction Factor Total per Second: " + totalCounter.getReductionFactorTotal() / rounds);
         System.out.println("Status Factor Total per Second: " + totalCounter.getStatusFactorTotal() / rounds);
-        
         
         return totalCounter.getAccumulatedFactorTotal() / ((double)combatantInfo.getRound()-1);
     }
@@ -317,7 +310,7 @@ public class Combatant {
     }
 
     private void countAbsorptionFactor(Skill skill) {
-        StatusEffect shield = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), Scaler.scale((skill.getMagnitude()*(1+absorptionDealtIncrease)/enemyCombatant.getDefense()),combatantInfo.getAttack(),combatantInfo.getTroopCount()));
+        StatusEffect shield = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), Scaler.scale((skill.getMagnitude()*(1+absorptionDealtIncrease)),combatantInfo.getAttack()/enemyCombatant.getDefense(),combatantInfo.getTroopCount()));
         totalCounter.addAbsorptionFactor(skill.getMagnitude()*(1+absorptionDealtIncrease));
         combatantInfo.addAbsorption(shield);
     }
@@ -397,4 +390,6 @@ public class Combatant {
         totalCounter.addDamageFactor(damage);
         enemyCombatant.addDamageTaken(Scaler.scale(damage, combatantInfo.getAttack(), combatantInfo.getTroopCount()));
     }
+
+
 }   
