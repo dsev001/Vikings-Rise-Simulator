@@ -10,6 +10,7 @@ public class CombatantInfo {
     private int round;
     private int activeCounter;
     private int troopChange;
+    private int troopHealed;
     // stats of the combatant
     private int troopCount;
     private double rage;
@@ -82,7 +83,7 @@ public class CombatantInfo {
         round++;
         troopCount+=troopChange;
         List<StatusEffect> expired = new ArrayList<>();
-
+        troopCount+=troopHealed;
         // transfer shields over
         for (StatusEffect newEffect : holderAbsorptionList) {
             boolean replaced = false;
@@ -118,6 +119,7 @@ public class CombatantInfo {
         nullification = 0;
         evasion = 0;
         retribution = 0;
+        troopHealed = 0;
 
         debuffEffectCollection.runInfo();
         addDamageTaken(debuffEffectCollection.getTotalDamage()); // so that damage counts the round after like ingame
@@ -129,11 +131,12 @@ public class CombatantInfo {
     }
 
     public void tickRage() {
-        //System.out.println(activeCounter);
-        if (rage + 100 >= 1000) {
+        if (rage == 0) { rage+=100; }
+        else { rage+=90; }
+        if (rage >= 1000) {
             rage = 0;
             activeCounter = 0;
-        } else { rage += 100; }
+        }
         //if (debuffEffectCollection.isEffectActive("silence")) {System.out.println("Silence active");}
         if (!debuffEffectCollection.isEffectActive("silence")) { activeCounter++; }
     }
@@ -147,10 +150,12 @@ public class CombatantInfo {
     public void addNullification (double nullification) { this.nullification += nullification; }
     public boolean isEffectActive(String type) { return debuffEffectCollection.isEffectActive(type); }
     public boolean isAbsorptionActive() { return !absorptionList.isEmpty(); }
+    public double getRetribution() { return retribution; }
+    public int getTroopHealed() { return troopHealed; }
 
     public void addDamageTaken (double scaledDamage) { 
         scaledDamage /= defense;
-        retributionDamage = scaledDamage; // done after your own defense but not health, and does reflect damage taken by shields, check if helps on statuses
+        retributionDamage = scaledDamage * retribution; // done after your own defense but not health, and does reflect damage taken by shields, check if helps on statuses
         for (StatusEffect absorption : absorptionList) {
             double holder = absorption.getMagnitude();
             if (holder > 0) {
@@ -178,7 +183,8 @@ public class CombatantInfo {
     public void addHeal (double scaledHealing) {
         // should already be divided by targets defense
         scaledHealing /= health;
-        troopChange += scaledHealing;
+        // doesn't add to troop change so heavily wounded pre heal can be checked
+        troopHealed += scaledHealing;
     }
 
     public void addDebuffEffect (int id, StatusEffect statusEffect) {
@@ -197,7 +203,7 @@ public class CombatantInfo {
     public void resetRound() {
         debuffEffectCollection = new DebuffEffectCollection();
         round = 1;
-        rage = 0;
+        rage = 0; // to hit the 100 r1
         activeCounter=4;
     }
 }

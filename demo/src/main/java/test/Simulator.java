@@ -61,6 +61,8 @@ public class Simulator {
         }
         double friendlyLost = 0;
         double enemyLost = 0;
+        double friendlyLostPreHeal = 0;
+        double enemyLostPreHeal = 0;
         setup();
         for (int i = 0; i < rounds; i++) {
             roundCombat(combatantList, enemyCombatantList);
@@ -73,6 +75,7 @@ public class Simulator {
                 combatant.setTroopCount();
             }
         }
+        System.out.println("Enemies Killed Per Troop Lost Pre Heal: ");
         System.out.println("Enemies Killed Per Troop Lost: " + (enemyLost/friendlyLost));
         System.out.println("does not consider heavy wounded conversion");
     }
@@ -91,7 +94,7 @@ public class Simulator {
             int val = singleFight(currentFriendlyCombatants, currentEnemyCombatants);
             results.add(val);
         }
-        //plotHistogram(results);
+        plotHistogram(results);
     }
 
     // simulates a random fight and gets you who wins, should return troop size of winner in future

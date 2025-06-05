@@ -208,9 +208,8 @@ public class Combatant {
 
     //Start Phase ticks rounds, adds actives and triggered set
     public void startPhase(CombatantInfo enemyCombatant) {
-        //runBuffEffects();
         this.enemyCombatant = enemyCombatant;
-        // find uptimes, runs buffs and the bases for triggered set
+        // find uptimes and the bases for triggered set
         for (String damageEffectUptime : SkillDatabase.damageEffectSet) {
             uptimeDic.put(damageEffectUptime, enemyCombatant.isEffectActive(damageEffectUptime));
             //if (combatantId == 0) { System.out.println(damageEffectUptime + " " + enemyCombatant.isEffectActive(damageEffectUptime)); }
@@ -229,7 +228,7 @@ public class Combatant {
         else if (Math.random() < 0.5) { uptimeDic.put("moreUnits",true); }
         else { uptimeDic.put("lessUnits",true); } // troop sizes equal in rally sims so make it random to account for reinforce variation
 
-        if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active"); }
+        if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active");}
         if (combatantInfo.getSecondaryActive()) { triggeredSet.add("activeSecondary");triggeredSet.add("active");}
 
         double enemyEvasion = enemyCombatant.getEvasion(); // evasion prevents damage but not triggers
@@ -281,10 +280,7 @@ public class Combatant {
                 }
             }
         }
-        if (combatantId == 0 && enemyCombatant.getRetributionDamage() > 0) {
-            System.out.println("hit");
-            combatantInfo.addDamageTakenPostDefense(enemyCombatant.getRetributionDamage());
-        }
+        combatantInfo.addDamageTakenPostDefense(enemyCombatant.getRetributionDamage());
     }
 
     public void counterattackPhase(CombatantInfo enemyCombatant) {

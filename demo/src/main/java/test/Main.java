@@ -10,21 +10,21 @@ public class Main {
 
         //need some kind of ui later, should add validation
         Simulator simulate = new Simulator();
-        simulate.setNewCombatant(196, 205, 231, 100000,
-        "Sephina", "Vali",
-        "Silencer", "Odin's Asylum", "Enrage",
-        "N/A", "Bloodthirst Gaze", "N/A", 
-        "N/A", "N/A");       
-        //(166, 174, 198, 200000,
-        simulate.setNewEnemyCombatant(196, 205, 231, 100000,
+        simulate.setNewCombatant(196, 205, 231, 1000,
         "N/A", "N/A",
         "N/A", "N/A", "N/A",
         "N/A", "N/A", "N/A", 
-        "N/A", "N/A");
+        "N/A", "N/A");       
+        //(166, 174, 198, 200000,
+        simulate.setNewEnemyCombatant(196, 205, 231, 1000,
+        "N/A", "N/A",
+        "N/A", "N/A", "N/A",
+        "N/A", "N/A", "N/A", 
+        "N/A", "N/A"); 
         
         //simulate.findTrades(10000);
-        simulate.runFights(1);
-        //System.out.println("done");
+        simulate.runFights(10000);
+        System.out.println("done");
         //simulate.runVerseRound(100000);
         //simulate.getFactorPerSecond();
         /*
