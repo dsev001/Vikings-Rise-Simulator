@@ -13,19 +13,19 @@ public class Main {
         simulate.setNewCombatant(196*(5), 205*(4), 231*(2), 200000,
         "Vali", "Sephina",
         "Silencer", "Silent Invasion", "Einherjar's Oath",
-        "Disarmament", "Bloodthirst Gaze", "N/A", 
-        "Divine Awe", "Bloodwing Assault");       
+        "Disarmament", "Bloodthirst Gaze", "Stinging Tongue", 
+        "Bloodwing Assault", "Bloodwing Assault");       
         //(166, 174, 198, 200000,
 
         simulate.setNewEnemyCombatant(196*(5), 205*(4), 231*(2), 200000,
         "Sephina", "Vali",
         "Silencer", "Silent Invasion", "Einherjar's Oath",
-        "Disarmament", "Bloodthirst Gaze", "N/A", 
-        "Divine Awe", "Icicle Armor");
+        "Disarmament", "Bloodthirst Gaze", "Strangled Death", 
+        "Agonizing Frost", "Fatal Chomp");
 
         /*
         simulate.setNewCombatant(196*(5), 205*(4), 231*(2), 200000,
-        "Alf", "Olena",
+        "Alf", "Olena", 
         "Einherjar's Oath", "Silent Invasion", "Berserk Killing Machine",
         "Disarmament", "Bloodthirst Gaze", "N/A", 
         "N/A", "N/A");  
@@ -38,7 +38,7 @@ public class Main {
         */
         
         
-        simulate.findTrades(2000000);
+        simulate.findTrades(1);
         //simulate.runFights(100000);
         //System.out.println("done");
         //simulate.runVerseRound(1000000);

@@ -19,7 +19,7 @@ public class SkillDatabase {
     public static HashSet<String> localKeptSet;
     public static HashSet<String> damageEffectSet;
     public static HashSet<String> debuffEffectSet; // non damaging debuffs lie slow
-
+    public static Combatant dummy = new Combatant(100, 100, 100, 200000, "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
     static {
         baseTypeSet = new HashSet<>(List.of(
             "evasion",
@@ -46,7 +46,8 @@ public class SkillDatabase {
             "absorption",
             "heal",
             "purify",
-            "debuffClear"
+            "debuffClear",
+            "buffClear"
         ));
 
         damageEffectSet = new HashSet<>(List.of(

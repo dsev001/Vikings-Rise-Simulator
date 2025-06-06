@@ -6,17 +6,23 @@ public class StatusEffect {
     private int duration; // remaining duration in rounds
     public int maxDuration; // the duration if it was just applied
     private double magnitude; // effect strength
+    private boolean removable;
 
-    public StatusEffect(String name, String type, int duration, double magnitude) {
+    public StatusEffect(String name, String type, int duration, double magnitude, boolean removable) {
         this.name = name;
         this.type = type;
         this.duration = duration;
         this.magnitude = magnitude;
         this.maxDuration = duration;
+        this.removable = removable;
     }
 
-    public boolean justApplied() {
-        return maxDuration == duration;
+    public boolean getRemovable() {
+        return (!(maxDuration == duration) && removable);
+    }
+
+    public boolean getEngrained() {
+        return !removable;
     }
 
     public void setDuration(int duration) {

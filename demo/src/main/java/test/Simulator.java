@@ -79,8 +79,7 @@ public class Simulator {
                 combatant.setTroopCount();
             }
         }
-
-        System.out.println("Enemies Killed Per Troop Lost Pre Heal: " + ((enemyLostPostHeal-enemyHealed)/(friendlyLostPostHeal-friendlyHealed)));
+        System.out.println("Enemies Killed Per Troop Lost Pre Heal: " + ((enemyLostPostHeal+enemyHealed)/(friendlyLostPostHeal+friendlyHealed)));
         System.out.println("Enemies Killed Per Troop Lost Post Heal: " + (enemyLostPostHeal/friendlyLostPostHeal));
         System.out.println("does not consider heavy wounded conversion");
     }

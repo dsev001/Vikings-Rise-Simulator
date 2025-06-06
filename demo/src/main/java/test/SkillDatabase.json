@@ -10,7 +10,8 @@
       "triggerChance": 0,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Chain Meteor Direct Damage",
@@ -23,7 +24,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Chain Meteor Burn Burst Damage",
@@ -36,7 +38,8 @@
       "triggerChance": 0.4,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Chain Meteor Poison Marble Damage",
@@ -49,7 +52,8 @@
       "triggerChance": 0.4,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Huginn's Slingshot Direct Damage",
@@ -62,7 +66,8 @@
       "triggerChance": 0.2,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Huginn's Slingshot Damage on Burn",
@@ -75,7 +80,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Fiery Poison Bullet Burn Increase",
@@ -88,7 +94,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": false
     },
     {
       "name": "Fiery Poison Bullet Poison Increase",
@@ -101,7 +108,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": false
     },
     {
       "name": "Fiery Poison Bomb Poison Damage",
@@ -114,7 +122,8 @@
       "triggerChance": 0,
       "roundsToTrigger": 9,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Fiery Poison Bomb Rage",
@@ -127,7 +136,8 @@
       "triggerChance": 0,
       "roundsToTrigger": 9,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Agile Missile Burn Damage",
@@ -140,7 +150,8 @@
       "triggerChance": 0,
       "roundsToTrigger": 6,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Agile Missile Evasion on Poison",
@@ -153,7 +164,8 @@
       "triggerChance": 0,
       "roundsToTrigger": 6,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "First Strike",
@@ -166,7 +178,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Poison Arrow Poison Damage",
@@ -179,7 +192,8 @@
       "triggerChance": 0,
       "roundsToTrigger": 9,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Poison Arrow Poison Attack Damp",
@@ -192,7 +206,8 @@
       "triggerChance": 0.35,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Bone Corroding Arrow Direct Damage",
@@ -205,7 +220,8 @@
       "triggerChance": 0,
       "roundsToTrigger": 6,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Bone Corroding Arrow Nullification on Poison",
@@ -218,7 +234,8 @@
       "triggerChance": 0,
       "roundsToTrigger": 6,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Fiery Rage Burn",
@@ -231,7 +248,8 @@
       "triggerChance": 0.1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Fiery Rage Burn on Burn",
@@ -244,7 +262,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Enrage Damage",
@@ -257,7 +276,8 @@
       "triggerChance": 0.2,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Enrage Rage",
@@ -270,7 +290,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Concentration Direct Damage",
@@ -283,7 +304,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Concentration Active Rage",
@@ -296,7 +318,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Concentration Burn Rage",
@@ -309,7 +332,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Enchanted Arrow",
@@ -322,7 +346,8 @@
       "triggerChance": 0.35,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Scorching Arrow",
@@ -335,7 +360,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": false
     },
     {
       "name": "Multi-Shot Arrow",
@@ -348,7 +374,8 @@
       "triggerChance": 0.5,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Poised Shot Damage",
@@ -361,7 +388,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Poised Shot Rage Damp",
@@ -374,7 +402,8 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Moonlit Strike Direct Damage",
@@ -387,7 +416,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Moonlit Strike Bleed on Slow",
@@ -400,7 +430,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Moonlit Strike Direct Damage on Silence",
@@ -413,7 +444,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Darkmoon Elegy Direct Damage",
@@ -426,7 +458,8 @@
       "triggerChance": 0.2,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Darkmoon Elegy Debuff Clear",
@@ -439,7 +472,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Darkmoon Elegy Direct Damage on Silence",
@@ -452,7 +486,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Darkmoon Elegy Buff Dispell on Silence",
@@ -465,7 +500,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Raven Feather Blade Basic Attack",
@@ -478,7 +514,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": false
     },
     {
       "name": "Raven Feather Blade Heal on Bleed",
@@ -491,7 +528,8 @@
       "triggerChance": 0.25,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Death Ravens Shadow Direct Damage",
@@ -504,7 +542,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Death Ravens Shadow Bleed on More Units",
@@ -517,7 +556,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Death Ravens Direct Damage on Fewer Units",
@@ -530,7 +570,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Death Ravens Slow on Fewer Units",
@@ -543,7 +584,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Ominous Raven Feather Direct Damage",
@@ -556,7 +598,8 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Ominous Raven Feather Silence",
@@ -569,7 +612,8 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Ominous Raven Feather Heal",
@@ -582,7 +626,8 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Ominous Raven Feather Retribution",
@@ -595,7 +640,8 @@
       "triggerChance": 0.25,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Bloodthirst Gaze",
@@ -608,7 +654,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Frostblade Direct Damage",
@@ -621,7 +668,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Frostblade Direct Damage on Bleed",
@@ -634,7 +682,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Frostblade Heal on Retribution",
@@ -647,7 +696,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Curse of the Frost Counterattack Selfnerf",
@@ -660,7 +710,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": false
     },
     {
       "name": "Curse of the Frost Direct Damage",
@@ -673,7 +724,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Curse of the Frost Direct Damage on Slow",
@@ -686,7 +738,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Curse of the Frost Shield on Slow",
@@ -699,7 +752,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Icy Edge Basicattack Damage",
@@ -712,7 +766,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": false
     },
     {
       "name": "Icy Edge Bleed Damage Increase",
@@ -725,7 +780,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": false
     },
     {
       "name": "Ice Cleave Bleed",
@@ -738,7 +794,8 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Ice Cleave Silence",
@@ -751,7 +808,8 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Ice Cleave Slow",
@@ -764,7 +822,8 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "An Eye for an Eye Retribution",
@@ -777,7 +836,8 @@
       "triggerChance": 0.2,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "An Eye for an Eye Retribution on Bleed",
@@ -790,7 +850,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "An Eye for an Eye Damage on Bleed",
@@ -803,7 +864,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Silencer Direct Damage",
@@ -816,7 +878,8 @@
       "triggerChance": 0.2,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Silencer Silence",
@@ -829,7 +892,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Odin's Asylum Direct Damage",
@@ -842,7 +906,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Odin's Asylum Absorption",
@@ -855,7 +920,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Rage Leech Heal",
@@ -868,7 +934,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Rage Leech Rage",
@@ -881,7 +948,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Berserk Killing Machine Rage on Bleed",
@@ -894,7 +962,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Berserk Killing Machine Strike 1 on Bleed",
@@ -907,7 +976,8 @@
       "triggerChance": 0.25,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Berserk Killing Machine Strike 2 on Bleed",
@@ -920,7 +990,8 @@
       "triggerChance": 0.25,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Berserk Killing Machine Retribution on not Bleed",
@@ -933,7 +1004,8 @@
       "triggerChance": 0.2,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Silent Invasion Silence",
@@ -946,7 +1018,8 @@
       "triggerChance": 0.25,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Silent Invasion Direct Damage on Slow",
@@ -959,7 +1032,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Silent Invasion Bleed on Not Slow",
@@ -972,7 +1046,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Einherjar's Oath Direct Damage",
@@ -985,7 +1060,8 @@
       "triggerChance": 0.2,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Einherjar's Oath Retribution",
@@ -998,7 +1074,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Einherjar's Oath Bleed on More Units",
@@ -1011,7 +1088,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Einherjar's Oath Absorption on Less Units",
@@ -1024,7 +1102,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Soul of Fury Rage",
@@ -1037,7 +1116,8 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Disarmament Damage",
@@ -1050,7 +1130,8 @@
       "triggerChance": 0.2,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Disarmament Disarm",
@@ -1063,7 +1144,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Disarmament Slow",
@@ -1076,7 +1158,8 @@
       "triggerChance": 0.2,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Divine Awe Purify",
@@ -1089,7 +1172,8 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Divine Awe Direct Damage",
@@ -1102,7 +1186,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Divine Awe moreUnits Direct Damage",
@@ -1115,7 +1200,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Divine Awe moreUnits Silence",
@@ -1128,7 +1214,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Bloodwing Assault Direct Damage",
@@ -1141,7 +1228,8 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Bloodwing Assault Direct Damage on Bleed",
@@ -1154,7 +1242,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Bloodwing Assault Disarm on not Bleed",
@@ -1167,7 +1256,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Bloodwing Assault Silence on not Bleed",
@@ -1180,7 +1270,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Agonizing Frost Direct Damage",
@@ -1193,7 +1284,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Agonizing Frost Direct Damage on not Slow",
@@ -1206,7 +1298,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Agonizing Frost Slow on not Slow",
@@ -1219,7 +1312,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Agonizing Frost Basic Attack Increase on Slow",
@@ -1232,7 +1326,8 @@
       "triggerChance": 1,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Icicle Armor >50% Bleed Damage",
@@ -1245,7 +1340,8 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "Icicle Armor <50% Absorption",
@@ -1258,7 +1354,134 @@
       "triggerChance": 0.15,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
+    },
+    {
+      "name": "Strangled Death Direct Damage",
+      "dependent": "active",
+      "categorySpecification": "cooperation",
+      "effectType": "directDamage",
+      "triggerRequirement": "N/A",
+      "magnitude": 725,
+      "skillDuration": 0,
+      "triggerChance": 1,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0,
+      "removable": true
+    },
+    {
+      "name": "Stinging Tongue",
+      "dependent": "basicAttack",
+      "categorySpecification": "cooperation",
+      "effectType": "directDamage",
+      "triggerRequirement": "N/A",
+      "magnitude": 865,
+      "skillDuration": 0,
+      "triggerChance": 0.15,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0,
+      "removable": true
+    },
+    {
+      "name": "Sturdy Bone Armour Nullification",
+      "dependent": "basicAttack",
+      "categorySpecification": "cooperation",
+      "effectType": "nullificationIncrease",
+      "triggerRequirement": "N/A",
+      "magnitude": 0.18,
+      "skillDuration": 2,
+      "triggerChance": 0.15,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0,
+      "removable": true
+    },
+    {
+      "name": "Fatal Chomp Direct Damage",
+      "dependent": "active",
+      "categorySpecification": "cooperation",
+      "effectType": "directDamage",
+      "triggerRequirement": "N/A",
+      "magnitude": 650,
+      "skillDuration": 0,
+      "triggerChance": 1,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0,
+      "removable": true
+    },
+    {
+      "name": "Fatal Chomp Bleed on not Bleed",
+      "dependent": "active",
+      "categorySpecification": "cooperation",
+      "effectType": "bleedDamage",
+      "triggerRequirement": "!bleedDamage",
+      "magnitude": 550,
+      "skillDuration": 2,
+      "triggerChance": 1,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0,
+      "removable": true
+    },
+    {
+      "name": "Fatal Chomp Basic Attack on Bleed",
+      "dependent": "active",
+      "categorySpecification": "cooperation",
+      "effectType": "basicAttackDamage",
+      "triggerRequirement": "bleedDamage",
+      "magnitude": 1,
+      "skillDuration": 2,
+      "triggerChance": 1,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0,
+      "removable": true
+    },
+    {
+      "name": "Blessed Dew Purify",
+      "dependent": "basicAttack",
+      "categorySpecification": "cooperation",
+      "effectType": "purify",
+      "triggerRequirement": "N/A",
+      "magnitude": 1,
+      "skillDuration": 0,
+      "triggerChance": 0.15,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0,
+      "removable": true
+    },
+    {
+      "name": "Blessed Dew Direct Damage",
+      "dependent": "Blessed Dew Purify",
+      "categorySpecification": "cooperation",
+      "effectType": "directDamage",
+      "triggerRequirement": "N/A",
+      "magnitude": 1000,
+      "skillDuration": 0,
+      "triggerChance": 1,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0,
+      "removable": true
+    },
+    {
+      "name": "Blessed Dew Heal on lessUnits",
+      "dependent": "Blessed Dew Purify",
+      "categorySpecification": "cooperation",
+      "effectType": "heal",
+      "triggerRequirement": "lessUnits",
+      "magnitude": 850,
+      "skillDuration": 1,
+      "triggerChance": 1,
+      "roundsToTrigger": -1,
+      "hitsPerCooldown": 1,
+      "cooldown": 0,
+      "removable": true
     },
     {
       "name": "N/A",
@@ -1271,6 +1494,7 @@
       "triggerChance": 0,
       "roundsToTrigger": -1,
       "hitsPerCooldown": 1,
-      "cooldown": 0
+      "cooldown": 0,
+      "removable": true
     }
   ]

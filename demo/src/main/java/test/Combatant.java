@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 public class Combatant {
@@ -33,6 +34,7 @@ public class Combatant {
     private int numberEnemyAttackers;
     private int combatantId;
     private int initialTroopCount; // for resetting combatant info when needed
+    private Random random = new Random();
 
 
     // Constructor
@@ -58,6 +60,7 @@ public class Combatant {
     private void internalReset() {
         combatantInfo.setTroopCount(initialTroopCount);
         combatantInfo.resetRound();
+        
         uptimeDic.put("heal",false);
         uptimeDic.put("absorption",false);
         uptimeDic.put("shieldGranted",false);
@@ -70,6 +73,8 @@ public class Combatant {
     }
 
     public void reset() {
+        startPhase(SkillDatabase.dummy.getCombatantInfo()); // lazy way to keep base effects for r1
+        clearTempBuffs();
         internalReset();
     }
     
@@ -201,6 +206,8 @@ public class Combatant {
     public void roundInitialisation() {
         uptimeDic.clear();
         numberEnemyAttackers = 0; // for counterattack scaling logic
+
+
         runBuffEffects();
         // if rage reaches 1000, should do active triggers immediately
         combatantInfo.tickRage();
@@ -261,13 +268,14 @@ public class Combatant {
                         case "heal" -> countHealFactor(skill);
                         case "purify" -> combatantInfo.purify();
                         case "debuffClear" -> combatantInfo.debuffClear((int)skill.getMagnitude());
+                        case "buffClear" -> enemyCombatant.addBuffClear();
                     }
                 }
                 else if (SkillDatabase.baseTypeSet.contains(skill.getEffectType())) {
-                    addBuffEffect(new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude()));
+                    addBuffEffect(new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude(),skill.getRemovable()));
                 }
                 else {
-                    StatusEffect debuff = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude());
+                    StatusEffect debuff = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude(),skill.getRemovable());
                     if (SkillDatabase.damageEffectSet.contains(debuff.getType())) {
                         // this is a damage debuff
                         double holder = debuff.getMagnitude();
@@ -310,6 +318,25 @@ public class Combatant {
 
     public void endPhase() {
         combatantInfo.tickRound();
+
+        //removes effects
+        for (int i = 0; i < combatantInfo.getBuffClear(); i++) {
+            List<StatusEffect> removableList = new ArrayList<>();
+            for (StatusEffect buff : buffEffects) {
+                if (buff.getRemovable()) { removableList.add(buff); }
+            }
+            if (!removableList.isEmpty()) {
+                StatusEffect toRemove = removableList.get(random.nextInt(removableList.size()));
+                buffEffects.remove(toRemove);
+                //System.out.println(toRemove.getName());
+            }
+
+            if (!buffEffects.isEmpty()) {
+                buffEffects.remove(random.nextInt(buffEffects.size()));
+                break;
+            }
+        }
+
         List<StatusEffect> expired = new ArrayList<>();
         for (StatusEffect buffEffect : buffEffects) {
             buffEffect.tick(); // decrease duration
@@ -323,14 +350,19 @@ public class Combatant {
         endRoundReset();
     }
 
+    private void clearTempBuffs() {
+        buffEffects.removeIf(buff -> !buff.getEngrained());
+    }
+
     private void countAbsorptionFactor(Skill skill) {
-        StatusEffect shield = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), Scaler.scale((skill.getMagnitude()*(1+absorptionDealtIncrease)),combatantInfo.getAttack()/enemyCombatant.getDefense(),combatantInfo.getTroopCount()));
+        StatusEffect shield = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), 
+            Scaler.scale((skill.getMagnitude()*(1+absorptionDealtIncrease)),combatantInfo.getAttack()/enemyCombatant.getDefense(),combatantInfo.getTroopCount()),skill.getRemovable());
         totalCounter.addAbsorptionFactor(skill.getMagnitude()*(1+absorptionDealtIncrease));
         combatantInfo.addAbsorption(shield);
     }
 
     private void countHealFactor(Skill skill) {
-        StatusEffect heal = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude()*(1+healDealtIncrease));
+        StatusEffect heal = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude()*(1+healDealtIncrease), skill.getRemovable());
         totalCounter.addHealFactor(skill.getMagnitude()*(1+healDealtIncrease));
         buffEffects.add(heal);
     }
@@ -361,6 +393,7 @@ public class Combatant {
     private void runBuffEffects() {
         uptimeDic.put("heal",false);
         for (StatusEffect effect : buffEffects) {
+            System.out.println(effect.getName());
             switch (effect.getType()) {
                 case "heal" -> { combatantInfo.addHeal(Scaler.scale(effect.getMagnitude(),combatantInfo.getAttack()/enemyCombatant.getDefense(),combatantInfo.getTroopCount())); uptimeDic.put("heal",true);}
                 case "rage" -> combatantInfo.addRage(effect.getMagnitude());

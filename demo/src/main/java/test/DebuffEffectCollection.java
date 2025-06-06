@@ -30,9 +30,10 @@ public class DebuffEffectCollection {
         while (mapIterator.hasNext()) {
             Integer id = mapIterator.next();
             List<StatusEffect> effectList = effectsById.get(id);
-            effectList.removeIf(effect -> !effect.justApplied());
+            effectList.removeIf(effect -> effect.getRemovable());
+
             if (effectList.isEmpty()) {
-                mapIterator.remove(); // only removes effects applied no this round
+                mapIterator.remove(); // only removes effects applied to this round
             }
         }
     }
@@ -42,7 +43,7 @@ public class DebuffEffectCollection {
         List<StatusEffect> allEffects = new ArrayList<>();
         for (List<StatusEffect> effectList : effectsById.values()) {
             for (StatusEffect effect : effectList) {
-                if (!effect.justApplied()) {
+                if (effect.getRemovable()) {
                     allEffects.add(effect);
                 }
             }

@@ -21,6 +21,7 @@ public class Skill {
     private int hitsPerCooldown;
     private int cooldown;
     private String dependent; //for "associated" skills
+    private boolean removable;
     @JsonIgnore
     private int currentCooldown;
     @JsonIgnore
@@ -53,6 +54,8 @@ public class Skill {
     public String getDependent () { return dependent; }
     public void setDependent (String dependent) { this.dependent=dependent;}
     public void setTriggerOpposite (Boolean oppositeCheck) { this.triggerOpposite = oppositeCheck; }
+    public boolean getRemovable() { return this.removable; }
+    public void setRemovable(boolean setting) { this.removable = setting; }
 
     // Only call this manually if you need a skill by name
     public static Skill loadFromJsonByName(String skillName) {

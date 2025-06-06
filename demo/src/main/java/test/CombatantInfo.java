@@ -28,6 +28,7 @@ public class CombatantInfo {
     private double defenseBoost;
     private double healthBoost;
     private boolean roundPostActiveCheck;
+    public int buffClear;
     // setters
     public void setRound(int round) { this.round = round; }
     public void setActiveCounter(int activeCounter) { this.activeCounter = activeCounter; }
@@ -150,11 +151,13 @@ public class CombatantInfo {
     public void addRetribution (double retribution) { this.retribution += retribution; }
     public void addEvasion (double evasion) { this.evasion += evasion; }
     public void addNullification (double nullification) { this.nullification += nullification; }
+    public void addBuffClear () { buffClear ++; } 
     public boolean isEffectActive(String type) { return debuffEffectCollection.isEffectActive(type); }
     public boolean isAbsorptionActive() { return !absorptionList.isEmpty(); }
     public double getRetribution() { return retribution; }
     public int getTroopHealed() { return troopHealed; }
     public void setTroopHealed(int troopHealed) { this.troopHealed = troopHealed; }
+    public int getBuffClear() { return buffClear; }
 
     public void addDamageTaken (double scaledDamage) { 
         scaledDamage /= defense;
@@ -210,7 +213,7 @@ public class CombatantInfo {
     public void resetRound() {
         debuffEffectCollection = new DebuffEffectCollection();
         round = 1;
-        rage = 0; // to hit the 100 r1
+        rage = 0;
         activeCounter=4;
     }
 
