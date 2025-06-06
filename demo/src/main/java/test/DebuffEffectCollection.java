@@ -2,11 +2,9 @@ package test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public class DebuffEffectCollection {
     private HashMap<Integer, List<StatusEffect>> effectsById = new HashMap<>();
@@ -17,7 +15,9 @@ public class DebuffEffectCollection {
     double defenseDamp;
     double healthDamp;
     double rageDamp;
-    
+    boolean basicAttack;
+
+    public boolean getBasicAttack() { return basicAttack; }
     public double getTotalDamage() { return damageTotal; }
     public double getAttackDamp() { return attackDamp; }
     public double getDefenseDamp() { return defenseDamp; }
@@ -25,14 +25,30 @@ public class DebuffEffectCollection {
     public double getRageDamp() { return rageDamp; }
     public boolean isEffectActive(String type) { return activeEffectTypes.getOrDefault(type, false); }
 
+    public void clear() {
+        Iterator<Integer> mapIterator = effectsById.keySet().iterator();
+        while (mapIterator.hasNext()) {
+            Integer id = mapIterator.next();
+            List<StatusEffect> effectList = effectsById.get(id);
+            effectList.removeIf(effect -> !effect.justApplied());
+            if (effectList.isEmpty()) {
+                mapIterator.remove(); // only removes effects applied no this round
+            }
+        }
+    }
+
     public void removeEffectRandom() {
 
         List<StatusEffect> allEffects = new ArrayList<>();
         for (List<StatusEffect> effectList : effectsById.values()) {
-            allEffects.addAll(effectList);
+            for (StatusEffect effect : effectList) {
+                if (!effect.justApplied()) {
+                    allEffects.add(effect);
+                }
+            }
         }
 
-        // If there are no effects, do nothing
+        // If empty cancel
         if (allEffects.isEmpty()) {
             return;
         }
@@ -78,18 +94,13 @@ public class DebuffEffectCollection {
         defenseDamp = 0;
         healthDamp = 0;
         rageDamp = 0;
-
-        activeEffectTypes.clear();
-        // We'll track types that might need to be marked inactive
-        Set<String> potentiallyInactive = new HashSet<>();
-
+        
         for (List<StatusEffect> effectList : effectsById.values()) {
             Iterator<StatusEffect> iterator = effectList.iterator();
             while (iterator.hasNext()) {
                 StatusEffect effect = iterator.next();
                 effect.tick();
                 if (effect.isExpired()) {
-                    potentiallyInactive.add(effect.getType());
                     iterator.remove();
                 }
             }
@@ -97,8 +108,11 @@ public class DebuffEffectCollection {
     }
 
     public void runInfo() {
+        activeEffectTypes.clear();
+        basicAttack = true;
         for (List<StatusEffect> list : effectsById.values()) {
             for (StatusEffect effect : list) {
+                //System.out.println(effect.getName());
                 activeEffectTypes.put(effect.getType(),true);
                 if (SkillDatabase.damageEffectSet.contains(effect.getType())) {
                     damageTotal += effect.getMagnitude();
@@ -109,6 +123,7 @@ public class DebuffEffectCollection {
                         case "defenseDamp" -> defenseDamp+=effect.getMagnitude();
                         case "healthDamp" -> healthDamp+=effect.getMagnitude();
                         case "rageDamp" -> rageDamp+=effect.getMagnitude();
+                        case "disarm" -> basicAttack = false;
                         //default -> System.out.println(effect.getType());
                         // add debuff clearing, silence done elsewhere
                     }

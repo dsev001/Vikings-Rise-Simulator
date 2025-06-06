@@ -1,12 +1,10 @@
 package test;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class CombatantInfo {
     // This class is used to store combatants info for passing between combatants
     // round info
-    private boolean basicAttackCheck;
     private int round;
     private int activeCounter;
     private int troopChange;
@@ -21,7 +19,6 @@ public class CombatantInfo {
     private List<StatusEffect> holderAbsorptionList = new ArrayList<>();
     // properties of the combatant
     private DebuffEffectCollection debuffEffectCollection = new DebuffEffectCollection();
-    private HashMap<String,Boolean> uptimeDic = new HashMap<>();
     private double nullification;
     private double counterAttackDamageReduction;
     private double evasion;
@@ -30,6 +27,7 @@ public class CombatantInfo {
     private double attackBoost;
     private double defenseBoost;
     private double healthBoost;
+    private boolean roundPostActiveCheck;
     // setters
     public void setRound(int round) { this.round = round; }
     public void setActiveCounter(int activeCounter) { this.activeCounter = activeCounter; }
@@ -54,7 +52,7 @@ public class CombatantInfo {
     public double getCounterAttackDamageReduction() { return counterAttackDamageReduction; }
     public double getEvasion() { return evasion; }
 
-    public boolean getBasicAttackCheck() { return basicAttackCheck; }
+    public boolean getBasicAttackCheck() { return debuffEffectCollection.getBasicAttack(); }
     public boolean getMainActive() { return activeCounter == 1 && !debuffEffectCollection.isEffectActive("silence"); }
     public boolean getSecondaryActive() { return activeCounter == 3 && !debuffEffectCollection.isEffectActive("silence"); }
     public boolean checkEvasion() { return evasion != 0; }
@@ -71,8 +69,8 @@ public class CombatantInfo {
         this.health = health;
         this.rage = 0;
         this.retributionDamage = 0;
-        this.basicAttackCheck = true;
         this.troopChange = 0;
+        this.roundPostActiveCheck = true;
     }
 
     // methods
@@ -83,7 +81,6 @@ public class CombatantInfo {
         round++;
         troopCount+=troopChange;
         List<StatusEffect> expired = new ArrayList<>();
-        troopCount+=troopHealed;
         // transfer shields over
         for (StatusEffect newEffect : holderAbsorptionList) {
             boolean replaced = false;
@@ -110,7 +107,6 @@ public class CombatantInfo {
         }
         absorptionList.removeAll(expired);
         // reset values
-        basicAttackCheck = true;
         attackBoost = 0;
         defenseBoost = 0;
         healthBoost = 0;
@@ -119,26 +115,32 @@ public class CombatantInfo {
         nullification = 0;
         evasion = 0;
         retribution = 0;
-        troopHealed = 0;
-
+        debuffEffectCollection.tickAll();
         debuffEffectCollection.runInfo();
-        addDamageTaken(debuffEffectCollection.getTotalDamage()); // so that damage counts the round after like ingame
+        addDamageTakenPostDefense(debuffEffectCollection.getTotalDamage()); // so that damage counts the round after like ingame
         rage -= debuffEffectCollection.getRageDamp();
         attackBoost -= debuffEffectCollection.getAttackDamp();
         defenseBoost -= debuffEffectCollection.getDefenseDamp();
         healthBoost -= debuffEffectCollection.getHealthDamp();
-        debuffEffectCollection.tickAll();
     }
 
     public void tickRage() {
-        if (rage == 0) { rage+=100; }
+        // this is done in round initialisation so moved here
+        //System.out.println(roundPostActiveCheck);
+        if (roundPostActiveCheck) { rage += 100; roundPostActiveCheck = false; }
         else { rage+=90; }
         if (rage >= 1000) {
             rage = 0;
             activeCounter = 0;
+            roundPostActiveCheck = true;
         }
         //if (debuffEffectCollection.isEffectActive("silence")) {System.out.println("Silence active");}
-        if (!debuffEffectCollection.isEffectActive("silence")) { activeCounter++; }
+        activeCounter++;
+        if (debuffEffectCollection.isEffectActive("silence")) { 
+            if (activeCounter == 2 || activeCounter == 4) { // keeps them locked in at 1,3 if silenced
+                activeCounter--;
+            }
+        }
     }
 
     public void addRage (double rage) { this.rage += rage; }
@@ -152,6 +154,7 @@ public class CombatantInfo {
     public boolean isAbsorptionActive() { return !absorptionList.isEmpty(); }
     public double getRetribution() { return retribution; }
     public int getTroopHealed() { return troopHealed; }
+    public void setTroopHealed(int troopHealed) { this.troopHealed = troopHealed; }
 
     public void addDamageTaken (double scaledDamage) { 
         scaledDamage /= defense;
@@ -184,7 +187,8 @@ public class CombatantInfo {
         // should already be divided by targets defense
         scaledHealing /= health;
         // doesn't add to troop change so heavily wounded pre heal can be checked
-        troopHealed += scaledHealing;
+        troopHealed += scaledHealing; // troopHealed is a counter not an actual var
+        troopChange += scaledHealing;
     }
 
     public void addDebuffEffect (int id, StatusEffect statusEffect) {
@@ -194,10 +198,13 @@ public class CombatantInfo {
     public void addDamageDebuffEffect (int id, StatusEffect statusEffect) {
         // need to scale using defence
         double holder = statusEffect.getMagnitude();
-        holder /= defense;
-        holder /= health;
+        holder /= defense; // health is done on the way back
         statusEffect.setMagnitude(holder);
         debuffEffectCollection.addEffect(id, statusEffect);
+    }
+
+    public void purify() {
+        debuffEffectCollection.clear();
     }
 
     public void resetRound() {
@@ -205,5 +212,11 @@ public class CombatantInfo {
         round = 1;
         rage = 0; // to hit the 100 r1
         activeCounter=4;
+    }
+
+    public void debuffClear(int debuffsToClear) {
+        for (int i = 0; i < debuffsToClear; i++) {
+            debuffEffectCollection.removeEffectRandom();
+        }
     }
 }

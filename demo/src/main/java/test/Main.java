@@ -10,22 +10,38 @@ public class Main {
 
         //need some kind of ui later, should add validation
         Simulator simulate = new Simulator();
-        simulate.setNewCombatant(196, 205, 231, 1000,
-        "N/A", "N/A",
-        "N/A", "N/A", "N/A",
-        "N/A", "N/A", "N/A", 
-        "N/A", "N/A");       
+        simulate.setNewCombatant(196*(5), 205*(4), 231*(2), 200000,
+        "Vali", "Sephina",
+        "Silencer", "Silent Invasion", "Einherjar's Oath",
+        "Disarmament", "Bloodthirst Gaze", "N/A", 
+        "Divine Awe", "Bloodwing Assault");       
         //(166, 174, 198, 200000,
-        simulate.setNewEnemyCombatant(196, 205, 231, 1000,
-        "N/A", "N/A",
-        "N/A", "N/A", "N/A",
-        "N/A", "N/A", "N/A", 
+
+        simulate.setNewEnemyCombatant(196*(5), 205*(4), 231*(2), 200000,
+        "Sephina", "Vali",
+        "Silencer", "Silent Invasion", "Einherjar's Oath",
+        "Disarmament", "Bloodthirst Gaze", "N/A", 
+        "Divine Awe", "Icicle Armor");
+
+        /*
+        simulate.setNewCombatant(196*(5), 205*(4), 231*(2), 200000,
+        "Alf", "Olena",
+        "Einherjar's Oath", "Silent Invasion", "Berserk Killing Machine",
+        "Disarmament", "Bloodthirst Gaze", "N/A", 
+        "N/A", "N/A");  
+
+        simulate.setNewEnemyCombatant(196*(5), 205*(4), 231*(2), 200000,
+        "Vali", "Sephina",
+        "Einherjar's Oath", "Silent Invasion", "Berserk Killing Machine",
+        "Enrage", "Bloodthirst Gaze", "N/A", 
         "N/A", "N/A"); 
+        */
         
-        //simulate.findTrades(10000);
-        simulate.runFights(10000);
-        System.out.println("done");
-        //simulate.runVerseRound(100000);
+        
+        simulate.findTrades(2000000);
+        //simulate.runFights(100000);
+        //System.out.println("done");
+        //simulate.runVerseRound(1000000);
         //simulate.getFactorPerSecond();
         /*
         simulate.setNewEnemyCombatant(300, 200, 100, 100000,

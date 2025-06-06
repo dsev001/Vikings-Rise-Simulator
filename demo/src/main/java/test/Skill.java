@@ -23,6 +23,8 @@ public class Skill {
     private String dependent; //for "associated" skills
     @JsonIgnore
     private int currentCooldown;
+    @JsonIgnore
+    private boolean triggerOpposite;
     //default constructor for Jackson
     public Skill() {}
     // Getters and Setters, needed for Jackson
@@ -50,6 +52,7 @@ public class Skill {
     public void setCurrentCooldown(int cooldown) { this.currentCooldown = cooldown; }
     public String getDependent () { return dependent; }
     public void setDependent (String dependent) { this.dependent=dependent;}
+    public void setTriggerOpposite (Boolean oppositeCheck) { this.triggerOpposite = oppositeCheck; }
 
     // Only call this manually if you need a skill by name
     public static Skill loadFromJsonByName(String skillName) {
@@ -63,6 +66,12 @@ public class Skill {
 
             for (Skill skill : skills) {
                 if (skill.getName().equalsIgnoreCase(skillName)) {
+                    // modify this skill for opposite triggers like e.g. on not bleed
+                    if (skill.getTriggerRequirement().charAt(0) == '!') {
+                        skill.setTriggerRequirement(skill.getTriggerRequirement().substring(1));
+                        skill.setTriggerOpposite(true);
+                    }
+                    else { skill.setTriggerOpposite(false); }
                     return skill;
                 }
             }
@@ -71,6 +80,9 @@ public class Skill {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
         return new Skill(); // return empty fallback to avoid null
     }
 
@@ -78,9 +90,10 @@ public class Skill {
         if (!dependent.equalsIgnoreCase("N/A") && !triggeredSet.contains(dependent)) {return false;} //for skills triggering on other skills
         if (triggerRequirement.equals("N/A")) { return checkTrigger(round); }
         try { 
-            if (uptimeDic.get(triggerRequirement)) {
-                return checkTrigger(round);
-            } else { return false; }
+            if (!triggerOpposite && uptimeDic.get(triggerRequirement)) { return checkTrigger(round); } 
+            if (triggerOpposite && !uptimeDic.get(triggerRequirement)) { return checkTrigger(round); } 
+            else { return false; }
+
         } catch (Exception e) {
             System.out.println("Unknown trigger requirement: " + triggerRequirement);
             System.out.println("check for error");

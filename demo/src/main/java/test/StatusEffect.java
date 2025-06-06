@@ -4,6 +4,7 @@ public class StatusEffect {
     private String name;
     private String type; // e.g. "buff", "debuff", "dot", etc.
     private int duration; // remaining duration in rounds
+    public int maxDuration; // the duration if it was just applied
     private double magnitude; // effect strength
 
     public StatusEffect(String name, String type, int duration, double magnitude) {
@@ -11,6 +12,11 @@ public class StatusEffect {
         this.type = type;
         this.duration = duration;
         this.magnitude = magnitude;
+        this.maxDuration = duration;
+    }
+
+    public boolean justApplied() {
+        return maxDuration == duration;
     }
 
     public void setDuration(int duration) {

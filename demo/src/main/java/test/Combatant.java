@@ -199,6 +199,7 @@ public class Combatant {
 
     // runs buff effects for your troops, then exchange phase
     public void roundInitialisation() {
+        uptimeDic.clear();
         numberEnemyAttackers = 0; // for counterattack scaling logic
         runBuffEffects();
         // if rage reaches 1000, should do active triggers immediately
@@ -214,19 +215,24 @@ public class Combatant {
             uptimeDic.put(damageEffectUptime, enemyCombatant.isEffectActive(damageEffectUptime));
             //if (combatantId == 0) { System.out.println(damageEffectUptime + " " + enemyCombatant.isEffectActive(damageEffectUptime)); }
         }
-
+        //System.out.println(enemyCombatant.isEffectActive("bleedDamage"));
         for (String debuffEffectUptime : SkillDatabase.debuffEffectSet) {
             uptimeDic.put(debuffEffectUptime, enemyCombatant.isEffectActive(debuffEffectUptime));
         }
 
+        uptimeDic.put(">50%", combatantInfo.getTroopCount() > initialTroopCount/2);
+        uptimeDic.put("<50%", combatantInfo.getTroopCount() < initialTroopCount/2);
         uptimeDic.put("absorption", combatantInfo.isAbsorptionActive());
         uptimeDic.put("retribution", combatantInfo.checkRetribution());
         uptimeDic.put("evasion",combatantInfo.checkEvasion());
+        uptimeDic.put("moreUnits",combatantInfo.getTroopCount()>enemyCombatant.getTroopCount());
+        uptimeDic.put("lessUnits",combatantInfo.getTroopCount()<enemyCombatant.getTroopCount());
+        if (combatantInfo.getTroopCount() == enemyCombatant.getTroopCount()) {
+            if (Math.random() < 0.5) { uptimeDic.put("moreUnits",true); }
+            else { uptimeDic.put("lessUnits",true); } // troop sizes equal in rally sims so make it random to account for reinforce variation
+        }
+
         //System.out.println("Rage" + combatantInfo.getRage());
-        if (combatantInfo.getTroopCount() > enemyCombatant.getTroopCount()) { uptimeDic.put("moreUnits",true); }
-        else if (combatantInfo.getTroopCount() < enemyCombatant.getTroopCount()) { uptimeDic.put("lessUnits",true); }
-        else if (Math.random() < 0.5) { uptimeDic.put("moreUnits",true); }
-        else { uptimeDic.put("lessUnits",true); } // troop sizes equal in rally sims so make it random to account for reinforce variation
 
         if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active");}
         if (combatantInfo.getSecondaryActive()) { triggeredSet.add("activeSecondary");triggeredSet.add("active");}
@@ -236,7 +242,7 @@ public class Combatant {
             totalCounter.addDamageFactor((basicAttackDamage+1)*200);
             enemyCombatant.addDamageTaken(Scaler.scale((basicAttackDamage+1-enemyCombatant.getNullification())*200,combatantInfo.getAttack(),combatantInfo.getTroopCount()));
         }
-        triggeredSet.add("basicAttack");
+        if (combatantInfo.getBasicAttackCheck()) { triggeredSet.add("basicAttack"); }
         triggeredSet.add("counterAttack");
         for (Skill skill : allSkills){
             if (skill.shouldTrigger(combatantInfo.getRound(), uptimeDic, triggeredSet)) {
@@ -253,6 +259,8 @@ public class Combatant {
                         case "directDamage" -> countDamageFactor(skill);
                         case "absorption" -> countAbsorptionFactor(skill);
                         case "heal" -> countHealFactor(skill);
+                        case "purify" -> combatantInfo.purify();
+                        case "debuffClear" -> combatantInfo.debuffClear((int)skill.getMagnitude());
                     }
                 }
                 else if (SkillDatabase.baseTypeSet.contains(skill.getEffectType())) {

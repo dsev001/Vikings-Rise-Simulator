@@ -44,7 +44,9 @@ public class SkillDatabase {
         localKeptSet = new HashSet<>(List.of(
             "directDamage",
             "absorption",
-            "heal"
+            "heal",
+            "purify",
+            "debuffClear"
         ));
 
         damageEffectSet = new HashSet<>(List.of(

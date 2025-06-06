@@ -59,24 +59,29 @@ public class Simulator {
         if (combatantList.isEmpty() || enemyCombatantList.isEmpty()) {
             throw new IllegalStateException("Combatant lists must be initialized before running fights.");
         }
-        double friendlyLost = 0;
-        double enemyLost = 0;
-        double friendlyLostPreHeal = 0;
-        double enemyLostPreHeal = 0;
+        double friendlyLostPostHeal = 0;
+        double enemyLostPostHeal = 0;
+        double friendlyHealed = 0;
+        double enemyHealed = 0;
         setup();
         for (int i = 0; i < rounds; i++) {
             roundCombat(combatantList, enemyCombatantList);
             for (Combatant combatant : combatantList) {
-                friendlyLost+=combatant.getInitialTroopCount() - combatant.getCombatantInfo().getTroopCount();
+                friendlyLostPostHeal+=combatant.getInitialTroopCount() - combatant.getCombatantInfo().getTroopCount();
+                friendlyHealed+=combatant.getCombatantInfo().getTroopHealed();
+                combatant.getCombatantInfo().setTroopHealed(0);
                 combatant.setTroopCount();
             }
             for (Combatant combatant : enemyCombatantList) {
-                enemyLost+=combatant.getInitialTroopCount() - combatant.getCombatantInfo().getTroopCount();
+                enemyLostPostHeal+=combatant.getInitialTroopCount() - combatant.getCombatantInfo().getTroopCount();
+                enemyHealed+=combatant.getCombatantInfo().getTroopHealed();
+                combatant.getCombatantInfo().setTroopHealed(0);
                 combatant.setTroopCount();
             }
         }
-        System.out.println("Enemies Killed Per Troop Lost Pre Heal: ");
-        System.out.println("Enemies Killed Per Troop Lost: " + (enemyLost/friendlyLost));
+
+        System.out.println("Enemies Killed Per Troop Lost Pre Heal: " + ((enemyLostPostHeal-enemyHealed)/(friendlyLostPostHeal-friendlyHealed)));
+        System.out.println("Enemies Killed Per Troop Lost Post Heal: " + (enemyLostPostHeal/friendlyLostPostHeal));
         System.out.println("does not consider heavy wounded conversion");
     }
 
