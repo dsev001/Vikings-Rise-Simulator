@@ -31,6 +31,7 @@ public class Combatant {
     private double poisonDamageIncrease;
     private double bleedDamageIncrease;
     private double lacerateDamageIncrease;
+    public double activeDealtIncrease;
     private int numberEnemyAttackers;
     private int combatantId;
     private int initialTroopCount; // for resetting combatant info when needed
@@ -227,6 +228,7 @@ public class Combatant {
             uptimeDic.put(debuffEffectUptime, enemyCombatant.isEffectActive(debuffEffectUptime));
         }
 
+        uptimeDic.put("flanked",false); // add a check later for this logic only does 1v1's for now
         uptimeDic.put(">50%", combatantInfo.getTroopCount() > initialTroopCount/2);
         uptimeDic.put("<50%", combatantInfo.getTroopCount() < initialTroopCount/2);
         uptimeDic.put("absorption", combatantInfo.isAbsorptionActive());
@@ -239,18 +241,20 @@ public class Combatant {
             else { uptimeDic.put("lessUnits",true); } // troop sizes equal in rally sims so make it random to account for reinforce variation
         }
 
-        //System.out.println("Rage" + combatantInfo.getRage());
+        //System.out.println(combatantId + " Rage " + combatantInfo.getRage() + " " + combatantInfo.getRound());
 
         if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active");}
         if (combatantInfo.getSecondaryActive()) { triggeredSet.add("activeSecondary");triggeredSet.add("active");}
+        if (enemyCombatant.getMainActive() || enemyCombatant.getSecondaryActive()) { triggeredSet.add("activeReceived"); }
+
 
         double enemyEvasion = enemyCombatant.getEvasion(); // evasion prevents damage but not triggers
         if (Math.random() > enemyEvasion) {
-            totalCounter.addDamageFactor((basicAttackDamage+1)*200);
-            enemyCombatant.addDamageTaken(Scaler.scale((basicAttackDamage+1-enemyCombatant.getNullification())*200,combatantInfo.getAttack(),combatantInfo.getTroopCount()));
+            totalCounter.addDamageFactor((1+basicAttackDamage+enemyCombatant.getDamageReceivedIncrease()-enemyCombatant.getNullification())*200);
+            enemyCombatant.addDamageTaken(Scaler.scale((1+basicAttackDamage+enemyCombatant.getDamageReceivedIncrease()-enemyCombatant.getNullification())*200,combatantInfo.getAttack(),combatantInfo.getTroopCount()));
         }
         if (combatantInfo.getBasicAttackCheck()) { triggeredSet.add("basicAttack"); }
-        triggeredSet.add("counterAttack");
+        if (combatantInfo.getCounteraAttackCheck()) { triggeredSet.add("counterAttack"); }
         for (Skill skill : allSkills){
             if (skill.shouldTrigger(combatantInfo.getRound(), uptimeDic, triggeredSet)) {
                 //scuffed but shouldn't error since its read in order
@@ -278,16 +282,18 @@ public class Combatant {
                     StatusEffect debuff = new StatusEffect(skill.getName(), skill.getEffectType(), skill.getDuration(), skill.getMagnitude(),skill.getRemovable());
                     if (SkillDatabase.damageEffectSet.contains(debuff.getType())) {
                         // this is a damage debuff
-                        double holder = debuff.getMagnitude();
+                        double holder = 0;
+                        holder += enemyCombatant.getDamageReceivedIncrease();
                         switch (debuff.getType()) {
-
-                            case "burnDamage" -> holder *= (1 + burnDamageIncrease);
-                            case "poisonDamage" -> holder *= (1 + poisonDamageIncrease);
-                            case "bleedDamage" -> holder *= (1 + bleedDamageIncrease);
-                            case "lacerateDamage" -> holder *= (1 + lacerateDamageIncrease);
+                            case "burnDamage" -> holder += burnDamageIncrease;
+                            case "poisonDamage" -> holder += poisonDamageIncrease;
+                            case "bleedDamage" -> holder += bleedDamageIncrease;
+                            case "lacerateDamage" -> holder += lacerateDamageIncrease;
                         }
-                        debuff.setMagnitude(Scaler.scale(holder,combatantInfo.getAttack(),combatantInfo.getTroopCount()));
-                        totalCounter.addStatusFactor(holder*debuff.getDuration()); //adds status factors, done all at once since status will still do damage after changing target
+                        if (skill.getDependent().equalsIgnoreCase("active")) { holder += activeDealtIncrease; } 
+                        // active dealt increases do help status damage from active skills, generic dealt increases don't though for some reason
+                        debuff.setMagnitude(Scaler.scale(skill.getMagnitude()*(1+holder),combatantInfo.getAttack(),combatantInfo.getTroopCount()));
+                        totalCounter.addStatusFactor(skill.getMagnitude()*(1+holder)*debuff.getDuration()); //adds status factors, done all at once since status will still do damage after changing target
                         enemyCombatant.addDamageDebuffEffect(combatantId,debuff);
                         continue;
                     }
@@ -296,12 +302,12 @@ public class Combatant {
                 }
             }
         }
-        combatantInfo.addDamageTakenPostDefense(enemyCombatant.getRetributionDamage());
+        combatantInfo.addDamageTakenPostDefense(enemyCombatant.getRetributionDamage()); // check if damage received increases help retribution
     }
 
     public void counterattackPhase(CombatantInfo enemyCombatant) {
         this.enemyCombatant = enemyCombatant;
-        double damage = 1 + counterAttackDamage - enemyCombatant.getNullification() - enemyCombatant.getCounterAttackDamageReduction();
+        double damage = 1 + counterAttackDamage + enemyCombatant.getDamageReceivedIncrease() - enemyCombatant.getNullification() - enemyCombatant.getCounterAttackDamageReduction();
         damage *= 200;
         //if (combatantId == 0) {System.out.println(damage);}
         double enemyEvasion = enemyCombatant.getEvasion();
@@ -382,6 +388,7 @@ public class Combatant {
         poisonDamageIncrease=0;
         bleedDamageIncrease=0;
         lacerateDamageIncrease=0;
+        activeDealtIncrease=0;
         numberEnemyAttackers=0;
     }
 
@@ -393,7 +400,6 @@ public class Combatant {
     private void runBuffEffects() {
         uptimeDic.put("heal",false);
         for (StatusEffect effect : buffEffects) {
-            System.out.println(effect.getName());
             switch (effect.getType()) {
                 case "heal" -> { combatantInfo.addHeal(Scaler.scale(effect.getMagnitude(),combatantInfo.getAttack()/enemyCombatant.getDefense(),combatantInfo.getTroopCount())); uptimeDic.put("heal",true);}
                 case "rage" -> combatantInfo.addRage(effect.getMagnitude());
@@ -416,6 +422,7 @@ public class Combatant {
                 case "absorptionDealtIncrease" -> absorptionDealtIncrease += effect.getMagnitude();
                 case "basicAttackDamage" -> basicAttackDamage += effect.getMagnitude();
                 case "counterAttackDamage" -> counterAttackDamage += effect.getMagnitude();
+                case "activeDealtIncrease" -> activeDealtIncrease += effect.getMagnitude();
                 default -> System.out.println("error, type " + effect.getType() + " not found");
             }
         }
@@ -433,7 +440,8 @@ public class Combatant {
             case "N/A" -> {}
             default -> System.out.println("Unknown category specification: " + skill.getCategorySpecification());
         }
-        damage *= (1 + dealtIncrease + additionalDealt - enemyCombatant.getNullification());
+        if (skill.getDependent().equalsIgnoreCase("active")) { additionalDealt+= activeDealtIncrease; }
+        damage *= (1 + dealtIncrease + additionalDealt + enemyCombatant.getDamageReceivedIncrease() - enemyCombatant.getNullification());
         totalCounter.addDamageFactor(damage);
         enemyCombatant.addDamageTaken(Scaler.scale(damage, combatantInfo.getAttack(), combatantInfo.getTroopCount()));
     }

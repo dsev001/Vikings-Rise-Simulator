@@ -54,11 +54,13 @@ public class CombatantInfo {
     public double getEvasion() { return evasion; }
 
     public boolean getBasicAttackCheck() { return debuffEffectCollection.getBasicAttack(); }
+    public boolean getCounteraAttackCheck() { return debuffEffectCollection.getCounterAttack(); }
     public boolean getMainActive() { return activeCounter == 1 && !debuffEffectCollection.isEffectActive("silence"); }
     public boolean getSecondaryActive() { return activeCounter == 3 && !debuffEffectCollection.isEffectActive("silence"); }
     public boolean checkEvasion() { return evasion != 0; }
     public boolean checkRetribution() { return retribution != 0; }
     public double getRetributionDamage() { double holder = retributionDamage; retributionDamage=0; return holder; }
+    public double getDamageReceivedIncrease() { return debuffEffectCollection.getDamageReceivedIncrease(); }
 
     // constructor
     public CombatantInfo(int troopCount, double attack, double defense, double health) {
@@ -211,6 +213,7 @@ public class CombatantInfo {
     }
 
     public void resetRound() {
+        absorptionList.clear();
         debuffEffectCollection = new DebuffEffectCollection();
         round = 1;
         rage = 0;

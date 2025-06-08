@@ -38,7 +38,8 @@ public class SkillDatabase {
             "bleedDealtIncrease",
             "poisonDealtIncrease",
             "lacerateDealtIncrease",
-            "basicAttackDamage"
+            "basicAttackDamage",
+            "activeDealtIncrease"
         ));
 
         localKeptSet = new HashSet<>(List.of(

@@ -52,6 +52,12 @@ public class Simulator {
         setup();
         for (int i = 0; i < rounds; i++){
             roundCombat(combatantList, enemyCombatantList);
+            for (Combatant combatant : combatantList) {
+                combatant.setTroopCount();
+            }
+            for (Combatant combatant : enemyCombatantList) {
+                combatant.setTroopCount();
+            }
         }
     }
 

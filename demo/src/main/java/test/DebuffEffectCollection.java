@@ -15,14 +15,18 @@ public class DebuffEffectCollection {
     double defenseDamp;
     double healthDamp;
     double rageDamp;
+    double damageReceivedIncrease;
     boolean basicAttack;
+    boolean counterAttack;
 
     public boolean getBasicAttack() { return basicAttack; }
+    public boolean getCounterAttack() { return counterAttack; }
     public double getTotalDamage() { return damageTotal; }
     public double getAttackDamp() { return attackDamp; }
     public double getDefenseDamp() { return defenseDamp; }
     public double getHealthDamp() { return healthDamp; }
     public double getRageDamp() { return rageDamp; }
+    public double getDamageReceivedIncrease() { return damageReceivedIncrease; }
     public boolean isEffectActive(String type) { return activeEffectTypes.getOrDefault(type, false); }
 
     public void clear() {
@@ -95,6 +99,7 @@ public class DebuffEffectCollection {
         defenseDamp = 0;
         healthDamp = 0;
         rageDamp = 0;
+        damageReceivedIncrease = 0;
         
         for (List<StatusEffect> effectList : effectsById.values()) {
             Iterator<StatusEffect> iterator = effectList.iterator();
@@ -111,6 +116,7 @@ public class DebuffEffectCollection {
     public void runInfo() {
         activeEffectTypes.clear();
         basicAttack = true;
+        counterAttack = false;
         for (List<StatusEffect> list : effectsById.values()) {
             for (StatusEffect effect : list) {
                 //System.out.println(effect.getName());
@@ -125,6 +131,8 @@ public class DebuffEffectCollection {
                         case "healthDamp" -> healthDamp+=effect.getMagnitude();
                         case "rageDamp" -> rageDamp+=effect.getMagnitude();
                         case "disarm" -> basicAttack = false;
+                        case "brokenBlade" -> counterAttack = false;
+                        case "damageReceivedIncrease" -> damageReceivedIncrease += effect.getMagnitude();
                         //default -> System.out.println(effect.getType());
                         // add debuff clearing, silence done elsewhere
                     }
