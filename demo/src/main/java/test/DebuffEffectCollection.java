@@ -134,7 +134,7 @@ public class DebuffEffectCollection {
                         case "brokenBlade" -> counterAttack = false;
                         case "damageReceivedIncrease" -> damageReceivedIncrease += effect.getMagnitude();
                         //default -> System.out.println(effect.getType());
-                        // add debuff clearing, silence done elsewhere
+                        // silence done elsewhere
                     }
                 }
             }
