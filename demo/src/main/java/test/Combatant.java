@@ -254,7 +254,8 @@ public class Combatant {
             enemyCombatant.addDamageTaken(Scaler.scale((1+basicAttackDamage+enemyCombatant.getDamageReceivedIncrease()-enemyCombatant.getNullification())*200,combatantInfo.getAttack(),combatantInfo.getTroopCount()));
         }
         if (combatantInfo.getBasicAttackCheck()) { triggeredSet.add("basicAttack"); }
-        if (combatantInfo.getCounteraAttackCheck()) { triggeredSet.add("counterAttack"); }
+        if (combatantInfo.getCounterAttackCheck()) { triggeredSet.add("counterAttack"); }
+        
         for (Skill skill : allSkills){
             if (skill.shouldTrigger(combatantInfo.getRound(), uptimeDic, triggeredSet)) {
                 //scuffed but shouldn't error since its read in order
@@ -401,7 +402,11 @@ public class Combatant {
         uptimeDic.put("heal",false);
         for (StatusEffect effect : buffEffects) {
             switch (effect.getType()) {
-                case "heal" -> { combatantInfo.addHeal(Scaler.scale(effect.getMagnitude(),combatantInfo.getAttack()/enemyCombatant.getDefense(),combatantInfo.getTroopCount())); uptimeDic.put("heal",true);}
+                case "heal" -> { 
+                    if (!combatantInfo.isEffectActive("devastation")) {
+                        combatantInfo.addHeal(Scaler.scale(effect.getMagnitude(),combatantInfo.getAttack()/enemyCombatant.getDefense(),combatantInfo.getTroopCount())); uptimeDic.put("heal",true);
+                    }
+                }
                 case "rage" -> combatantInfo.addRage(effect.getMagnitude());
                 case "burnDealtIncrease" -> burnDamageIncrease += effect.getMagnitude();
                 case "poisonDealtIncrease" -> poisonDamageIncrease += effect.getMagnitude();

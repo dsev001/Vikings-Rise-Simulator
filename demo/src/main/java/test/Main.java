@@ -11,15 +11,15 @@ public class Main {
         //need some kind of ui later, should add validation
         Simulator simulate = new Simulator();
         simulate.setNewCombatant(196*(5), 205*(4), 231*(2), 100000,
-        "Alf", "Charlton",
-        "Enrage", "N/A", "N/A",
+        "Alf", "N/A",
+        "N/A", "N/A", "N/A",
         "N/A", "N/A", "N/A", 
         "N/A", "N/A");
         //(166, 174, 198, 200000,
 
         simulate.setNewEnemyCombatant(196*(5), 205*(4), 231*(2), 100000,
-        "Alf", "Heidrun",
-        "Enrage", "N/A", "N/A",
+        "Gunnar", "N/A",
+        "N/A", "N/A", "N/A",
         "N/A", "N/A", "N/A", 
         "N/A", "N/A");
 
@@ -50,11 +50,11 @@ public class Main {
         */
         
         
-        simulate.findTrades(100000);
+        simulate.findTrades(1000000);
         //simulate.runFights(100000);
         //System.out.println("done");
         //simulate.runVerseRound(100000);
-        //simulate.getFactorPerSecond();
+        //simulate.getFactorPerSecond(); // fix fps counter for status effects
         /*
         simulate.setNewEnemyCombatant(300, 200, 100, 100000,
         "Sephina", "N/A",

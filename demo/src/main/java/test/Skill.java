@@ -26,6 +26,8 @@ public class Skill {
     private int currentCooldown;
     @JsonIgnore
     private boolean triggerOpposite;
+    @JsonIgnore
+    public int delay;
     //default constructor for Jackson
     public Skill() {}
     // Getters and Setters, needed for Jackson
@@ -75,6 +77,7 @@ public class Skill {
                         skill.setTriggerOpposite(true);
                     }
                     else { skill.setTriggerOpposite(false); }
+                    skill.checkTriggerDelay();
                     return skill;
                 }
             }
@@ -89,12 +92,17 @@ public class Skill {
         return new Skill(); // return empty fallback to avoid null
     }
 
+    public void checkTriggerDelay() {
+        if (name.contains("Devastating Charge")) { delay = -1; } // to account for a bug ingame, makes devastating charge trigger r1, r7 etc
+        else { delay = 0; }
+    }
+
     public boolean shouldTrigger(int round, HashMap<String, Boolean> uptimeDic, Set<String> triggeredSet) {
         if (!dependent.equalsIgnoreCase("N/A") && !triggeredSet.contains(dependent)) {return false;} //for skills triggering on other skills
-        if (triggerRequirement.equals("N/A")) { return checkTrigger(round); }
+        if (triggerRequirement.equals("N/A")) { return checkTrigger(round + delay); }
         try { 
-            if (!triggerOpposite && uptimeDic.get(triggerRequirement)) { return checkTrigger(round); } 
-            if (triggerOpposite && !uptimeDic.get(triggerRequirement)) { return checkTrigger(round); } 
+            if (!triggerOpposite && uptimeDic.get(triggerRequirement)) { return checkTrigger(round + delay); } 
+            if (triggerOpposite && !uptimeDic.get(triggerRequirement)) { return checkTrigger(round + delay); } 
             else { return false; }
 
         } catch (Exception e) {

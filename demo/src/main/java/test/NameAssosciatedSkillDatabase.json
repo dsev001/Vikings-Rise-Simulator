@@ -1727,5 +1727,43 @@
         "otherSkill9": "N/A",
         "otherSkill10": "N/A",
         "activeSkill": "N/A"
+    },
+    {
+        "name": "Devastating CHarge",
+        "awakenedSkill": "N/A",
+        "secondarySkill": "N/A",
+        "firstTalentSkill": "N/A",
+        "thirdTalentSkill": "N/A",
+        "sixthTalentSkill": "N/A",
+        "otherSkill": "Devastating Charge Direct Damage",
+        "otherSkill2": "Devastating Charge Devastation on Poison",
+        "otherSkill3": "Devastating Charge Evasion on Burn Damage",
+        "otherSkill4": "N/A",
+        "otherSkill5": "N/A",
+        "otherSkill6": "N/A",
+        "otherSkill7": "N/A",
+        "otherSkill8": "N/A",
+        "otherSkill9": "N/A",
+        "otherSkill10": "N/A",
+        "activeSkill": "N/A"
+    },
+    {
+        "name": "N/A",
+        "awakenedSkill": "N/A",
+        "secondarySkill": "N/A",
+        "firstTalentSkill": "N/A",
+        "thirdTalentSkill": "N/A",
+        "sixthTalentSkill": "N/A",
+        "otherSkill": "N/A",
+        "otherSkill2": "N/A",
+        "otherSkill3": "N/A",
+        "otherSkill4": "N/A",
+        "otherSkill5": "N/A",
+        "otherSkill6": "N/A",
+        "otherSkill7": "N/A",
+        "otherSkill8": "N/A",
+        "otherSkill9": "N/A",
+        "otherSkill10": "N/A",
+        "activeSkill": "N/A"
     }
 ]

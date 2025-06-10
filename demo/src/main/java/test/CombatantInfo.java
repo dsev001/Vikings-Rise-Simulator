@@ -54,7 +54,7 @@ public class CombatantInfo {
     public double getEvasion() { return evasion; }
 
     public boolean getBasicAttackCheck() { return debuffEffectCollection.getBasicAttack(); }
-    public boolean getCounteraAttackCheck() { return debuffEffectCollection.getCounterAttack(); }
+    public boolean getCounterAttackCheck() { return debuffEffectCollection.getCounterAttack(); }
     public boolean getMainActive() { return activeCounter == 1 && !debuffEffectCollection.isEffectActive("silence"); }
     public boolean getSecondaryActive() { return activeCounter == 3 && !debuffEffectCollection.isEffectActive("silence"); }
     public boolean checkEvasion() { return evasion != 0; }
@@ -215,6 +215,7 @@ public class CombatantInfo {
     public void resetRound() {
         absorptionList.clear();
         debuffEffectCollection = new DebuffEffectCollection();
+        debuffEffectCollection.runInfo();
         round = 1;
         rage = 0;
         activeCounter=4;

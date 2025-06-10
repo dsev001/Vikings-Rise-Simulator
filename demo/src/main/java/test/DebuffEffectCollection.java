@@ -116,7 +116,7 @@ public class DebuffEffectCollection {
     public void runInfo() {
         activeEffectTypes.clear();
         basicAttack = true;
-        counterAttack = false;
+        counterAttack = true;
         for (List<StatusEffect> list : effectsById.values()) {
             for (StatusEffect effect : list) {
                 //System.out.println(effect.getName());
@@ -133,6 +133,7 @@ public class DebuffEffectCollection {
                         case "disarm" -> basicAttack = false;
                         case "brokenBlade" -> counterAttack = false;
                         case "damageReceivedIncrease" -> damageReceivedIncrease += effect.getMagnitude();
+                        
                         //default -> System.out.println(effect.getType());
                         // silence done elsewhere
                     }
