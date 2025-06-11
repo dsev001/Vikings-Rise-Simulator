@@ -36,6 +36,8 @@ public class Combatant {
     private int combatantId;
     private int initialTroopCount; // for resetting combatant info when needed
     private Random random = new Random();
+    private int activeCount = 0;
+    private int secondaryCount = 0;
 
 
     // Constructor
@@ -107,6 +109,7 @@ public class Combatant {
                         com2 = false;
                         if (value.equalsIgnoreCase(setupNames.get("commander1"))) { com1 = true; }
                         else if (value.equalsIgnoreCase(setupNames.get("commander2"))) { com2 = true; }
+                        //System.out.println(setupNames.get("commander2"));
                     }
 
                     if (!key.equals("name") && !"N/A".equalsIgnoreCase(value)) {
@@ -117,9 +120,11 @@ public class Combatant {
                     // Assign awakened skill only if it's the correct commander and com1/com2 are true
                     if (key.equals("awakenedSkill")) {
                         if (com1) {
+                            //System.out.println(value);
                             commander1active = value;
                         }
                         if (com2) {
+                            //System.out.println(value);
                             commander2active = value;
                         }
                     }
@@ -146,9 +151,12 @@ public class Combatant {
                     String value = field.getValue();
 
                     if (key.equalsIgnoreCase("name")) { // Check for "name" key
+                        com1check = false;
+                        com2check = false;
                         if (value.equalsIgnoreCase(commander1active)) {
                             com1check = true;
-                        } else if (value.equalsIgnoreCase(commander2active)) {
+                        }
+                        if (value.equalsIgnoreCase(commander2active)) {
                             com2check = true;
                         }
                     }
@@ -156,9 +164,11 @@ public class Combatant {
                     if (!key.equals("name") && !"N/A".equalsIgnoreCase(value)) {
                         Skill skill = Skill.loadFromJsonByName(value);
                         if (com1check) {
+                            //System.out.println(skill.getName());
                             skill.setDependent("activeMain");
                         }
                         if (com2check) {
+                            //System.out.println(skill.getName());
                             skill.setDependent("activeSecondary");
                         }
                         allSkills.add(skill);
@@ -243,10 +253,13 @@ public class Combatant {
 
         //System.out.println(combatantId + " Rage " + combatantInfo.getRage() + " " + combatantInfo.getRound());
 
-        if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active");}
-        if (combatantInfo.getSecondaryActive()) { triggeredSet.add("activeSecondary");triggeredSet.add("active");}
+        if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active"); activeCount++; }
+        if (combatantInfo.getSecondaryActive()) { triggeredSet.add("activeSecondary");triggeredSet.add("active"); secondaryCount++; }
         if (enemyCombatant.getMainActive() || enemyCombatant.getSecondaryActive()) { triggeredSet.add("activeReceived"); }
-
+        //if (combatantId == 1) { System.out.println(combatantInfo.isEffectActive("silence"));}
+        //if (combatantId == 1) { System.out.println("primary " + activeCount); }
+        //if (combatantId == 1) { System.out.println("secondary " + secondaryCount); }
+        //if (combatantId == 1) { System.out.println(combatantInfo.getActiveCounter()); }
 
         double enemyEvasion = enemyCombatant.getEvasion(); // evasion prevents damage but not triggers
         if (Math.random() > enemyEvasion) {
@@ -255,7 +268,10 @@ public class Combatant {
         }
         if (combatantInfo.getBasicAttackCheck()) { triggeredSet.add("basicAttack"); }
         if (combatantInfo.getCounterAttackCheck()) { triggeredSet.add("counterAttack"); }
-        
+        if (enemyCombatant.getBasicAttackCheck()) { triggeredSet.add("basicReceived"); }
+        if (Math.random()<0.5) { triggeredSet.add("chance1"); }
+        else { triggeredSet.add("chance2"); }
+
         for (Skill skill : allSkills){
             if (skill.shouldTrigger(combatantInfo.getRound(), uptimeDic, triggeredSet)) {
                 //scuffed but shouldn't error since its read in order

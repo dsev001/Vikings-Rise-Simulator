@@ -52,6 +52,7 @@ public class CombatantInfo {
     public double getNullification() { return nullification; }
     public double getCounterAttackDamageReduction() { return counterAttackDamageReduction; }
     public double getEvasion() { return evasion; }
+    public double getTroopChange() { return troopChange; }
 
     public boolean getBasicAttackCheck() { return debuffEffectCollection.getBasicAttack(); }
     public boolean getCounterAttackCheck() { return debuffEffectCollection.getCounterAttack(); }
@@ -133,14 +134,17 @@ public class CombatantInfo {
         if (roundPostActiveCheck) { rage += 100; roundPostActiveCheck = false; }
         else { rage+=90; }
         if (rage >= 1000) {
-            rage = 0;
+            if (!debuffEffectCollection.isEffectActive("silence")) { 
+                rage = 0; 
+                // if the active gets delayed it doesn't reset seem to reset rage, delayed first active makes a delayed second
+                roundPostActiveCheck = true;
+            }
             activeCounter = 0;
-            roundPostActiveCheck = true;
         }
         //if (debuffEffectCollection.isEffectActive("silence")) {System.out.println("Silence active");}
         activeCounter++;
         if (debuffEffectCollection.isEffectActive("silence")) { 
-            if (activeCounter == 2 || activeCounter == 4) { // keeps them locked in at 1,3 if silenced
+            if (activeCounter == 1 || activeCounter == 3) { // keeps them locked in at 0,2 if silenced
                 activeCounter--;
             }
         }
@@ -163,7 +167,7 @@ public class CombatantInfo {
 
     public void addDamageTaken (double scaledDamage) { 
         scaledDamage /= defense;
-        retributionDamage = scaledDamage * retribution; // done after your own defense but not health, and does reflect damage taken by shields, check if helps on statuses
+        retributionDamage += scaledDamage * retribution; // done after your own defense but not health, and does reflect damage taken by shields, check if helps on statuses
         for (StatusEffect absorption : absorptionList) {
             double holder = absorption.getMagnitude();
             if (holder > 0) {
@@ -176,6 +180,15 @@ public class CombatantInfo {
     }
 
     public void addDamageTakenPostDefense (double scaledDamagePostDefense) {
+        
+        for (StatusEffect absorption : absorptionList) {
+            double holder = absorption.getMagnitude();
+            if (holder > 0) {
+                if (holder < scaledDamagePostDefense) {scaledDamagePostDefense -= holder; absorption.setMagnitude(0);}
+                else {absorption.addMagnitude(-scaledDamagePostDefense); return;}
+            }
+        }
+        
         scaledDamagePostDefense /= health;
         //System.out.println(scaledDamagePostDefense);
         troopChange -= scaledDamagePostDefense;

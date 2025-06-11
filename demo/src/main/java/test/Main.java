@@ -10,20 +10,48 @@ public class Main {
 
         //need some kind of ui later, should add validation
         Simulator simulate = new Simulator();
-        simulate.setNewCombatant(196*(5), 205*(4), 231*(2), 100000,
-        "Alf", "N/A",
-        "N/A", "N/A", "N/A",
-        "N/A", "N/A", "N/A", 
+        simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 100000,
+        "Sephina", "Olena",
+        "First Strike", "Odin's Asylum", "Berserk Killing Machine",
+        "Rage Leech", "Bloodthirst Gaze", "Strangled Death", 
         "N/A", "N/A");
         //(166, 174, 198, 200000,
-
-        simulate.setNewEnemyCombatant(196*(5), 205*(4), 231*(2), 100000,
-        "Gunnar", "N/A",
-        "N/A", "N/A", "N/A",
-        "N/A", "N/A", "N/A", 
+        simulate.setNewEnemyCombatant(166*(5), 174*(4), 198*(2), 100000,
+        "Sephina", "Margit",
+        "First Strike", "Odin's Asylum", "Berserk Killing Machine",
+        "Rage Leech", "Bloodthirst Gaze", "Strangled Death", 
         "N/A", "N/A");
 
+
+        //simulate.setNewCombatant(172*(4.6), 196*(4), 169*(2), 100000,
         /*
+
+        simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 100000,
+        "Sephina", "Vali",
+        "Disarmament", "Silencer", "Silent Invasion",
+        "Einherjar's Oath", "Soul of Fury", "Strangled Death", 
+        "Divine Awe", "Divine Awe");
+        //(166, 174, 198, 200000,
+
+        simulate.setNewEnemyCombatant(166*(5), 174*(4), 198*(2), 100000,
+        "Sephina", "Vali",
+        "Disarmament", "Silencer", "Silent Invasion",
+        "Einherjar's Oath", "Bloodthirst Gaze", "Strangled Death", 
+        "Divine Awe", "Icicle Armor");
+
+        simulate.setNewCombatant(172*(4.6), 196*(4), 169*(2), 100000,
+        "Gunnar", "Hilda",
+        "Disarmament", "Silencer", "Silent Invasion",
+        "Einherjar's Oath", "Soul of Fury", "Strangled Death", 
+        "Divine Awe", "Divine Awe");
+        //(166, 174, 198, 200000,
+
+        simulate.setNewEnemyCombatant(166*(5), 174*(4), 198*(2), 100000,
+        "Sephina", "Vali",
+        "Disarmament", "Silencer", "Silent Invasion",
+        "Einherjar's Oath", "Bloodthirst Gaze", "Strangled Death", 
+        "Divine Awe", "Icicle Armor");
+
         simulate.setNewEnemyCombatant(196*(5), 205*(4), 231*(2), 200000,
         "Sephina", "Vali",
         "Silencer", "Silent Invasion", "Einherjar's Oath",
@@ -50,7 +78,7 @@ public class Main {
         */
         
         
-        simulate.findTrades(1000000);
+        simulate.findTrades(100000);
         //simulate.runFights(100000);
         //System.out.println("done");
         //simulate.runVerseRound(100000);
