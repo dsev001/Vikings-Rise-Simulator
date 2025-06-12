@@ -21,6 +21,10 @@ public class StatusEffect {
         return (!(maxDuration == duration) && removable);
     }
 
+    public boolean justAdded() {
+        return (maxDuration == duration);
+    }
+
     public boolean getEngrained() {
         return !removable;
     }

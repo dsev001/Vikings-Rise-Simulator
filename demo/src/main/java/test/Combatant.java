@@ -66,7 +66,6 @@ public class Combatant {
         
         uptimeDic.put("heal",false);
         uptimeDic.put("absorption",false);
-        uptimeDic.put("shieldGranted",false);
         uptimeDic.put("heal",false);
         uptimeDic.put("lessUnits",false);
         uptimeDic.put("moreUnits",false);
@@ -231,13 +230,14 @@ public class Combatant {
         // find uptimes and the bases for triggered set
         for (String damageEffectUptime : SkillDatabase.damageEffectSet) {
             uptimeDic.put(damageEffectUptime, enemyCombatant.isEffectActive(damageEffectUptime));
+            if (enemyCombatant.isEffectActive(damageEffectUptime)) { triggeredSet.add("continuousDamage"); }
             //if (combatantId == 0) { System.out.println(damageEffectUptime + " " + enemyCombatant.isEffectActive(damageEffectUptime)); }
         }
         //System.out.println(enemyCombatant.isEffectActive("bleedDamage"));
         for (String debuffEffectUptime : SkillDatabase.debuffEffectSet) {
             uptimeDic.put(debuffEffectUptime, enemyCombatant.isEffectActive(debuffEffectUptime));
         }
-
+        
         uptimeDic.put("flanked",false); // add a check later for this logic only does 1v1's for now
         uptimeDic.put(">50%", combatantInfo.getTroopCount() > initialTroopCount/2);
         uptimeDic.put("<50%", combatantInfo.getTroopCount() < initialTroopCount/2);
@@ -341,8 +341,15 @@ public class Combatant {
 
     public void endPhase() {
         combatantInfo.tickRound();
-
+        endRoundReset();
         //removes effects
+        for (StatusEffect buffEffect : buffEffects) {
+            if (buffEffect.justAdded()) {
+                triggeredSet.add("shieldGranted");
+                break;
+            }
+        }
+
         for (int i = 0; i < combatantInfo.getBuffClear(); i++) {
             List<StatusEffect> removableList = new ArrayList<>();
             for (StatusEffect buff : buffEffects) {
@@ -370,7 +377,7 @@ public class Combatant {
         buffEffects.removeAll(expired);
         //for (StatusEffect buff : buffEffects) { System.out.print(buff.getName() + " "); }
         //System.out.println(" ");
-        endRoundReset();
+
     }
 
     private void clearTempBuffs() {

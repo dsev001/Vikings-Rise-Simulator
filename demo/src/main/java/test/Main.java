@@ -10,21 +10,27 @@ public class Main {
 
         //need some kind of ui later, should add validation
         Simulator simulate = new Simulator();
-        simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 100000,
-        "Sephina", "Olena",
-        "First Strike", "Odin's Asylum", "Berserk Killing Machine",
-        "Rage Leech", "Bloodthirst Gaze", "Strangled Death", 
-        "N/A", "N/A");
+    
+        simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 200000,
+        "Sephina", "Vali",
+        "Disarmament", "Silencer", "Silent Invasion",
+        "Einherjar's Oath", "Soul of Fury", "Strangled Death", 
+        "Divine Awe", "Divine Awe");
+
+        simulate.setNewEnemyCombatant(166*(5), 174*(4), 198*(2), 200000,
+        "Sephina", "Vali",
+        "Disarmament", "Silencer", "Silent Invasion",
+        "Einherjar's Oath", "Strangled Death", "Soul of Fury", 
+        "Icicle Armor", "Agonizing Frost");
         //(166, 174, 198, 200000,
-        simulate.setNewEnemyCombatant(166*(5), 174*(4), 198*(2), 100000,
-        "Sephina", "Margit",
+
+
+        /*
+
+        "Sephina", "Vali",
         "First Strike", "Odin's Asylum", "Berserk Killing Machine",
         "Rage Leech", "Bloodthirst Gaze", "Strangled Death", 
         "N/A", "N/A");
-
-
-        //simulate.setNewCombatant(172*(4.6), 196*(4), 169*(2), 100000,
-        /*
 
         simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 100000,
         "Sephina", "Vali",
@@ -45,6 +51,7 @@ public class Main {
         "Einherjar's Oath", "Soul of Fury", "Strangled Death", 
         "Divine Awe", "Divine Awe");
         //(166, 174, 198, 200000,
+
 
         simulate.setNewEnemyCombatant(166*(5), 174*(4), 198*(2), 100000,
         "Sephina", "Vali",

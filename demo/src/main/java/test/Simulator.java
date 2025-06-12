@@ -163,6 +163,7 @@ public class Simulator {
         // Count basic attackers
         int friendlyBasics = 0;
         int enemyBasics = 0;
+        //System.out.println(friendlyCombatants.get(0).getCombatantInfo().getRound());
         for (Combatant combatant : friendlyCombatants) {
             if (combatant.getCombatantInfo().getBasicAttackCheck()) {
                 friendlyBasics++;
@@ -236,8 +237,8 @@ public class Simulator {
 
         // Create dataset
         double binWidth = 5000; // Adjust based on expected troop ranges
-        double min = -100000;    // Smallest expected troop count (e.g., enemy win by 1000)
-        double max = 100000;     // Largest expected troop count (e.g., friendly win by 1000)
+        double min = -200000;    // Smallest expected troop count (e.g., enemy win by 1000)
+        double max = 200000;     // Largest expected troop count (e.g., friendly win by 1000)
         int binCount = (int)((max - min) / binWidth )+1;
 
         HistogramDataset dataset = new HistogramDataset();
