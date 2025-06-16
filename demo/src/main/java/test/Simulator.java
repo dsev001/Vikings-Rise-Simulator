@@ -61,33 +61,33 @@ public class Simulator {
         }
     }
 
-    public void findTrades(int rounds) {
+    public CombatRecord findTrades(int rounds, boolean printCheck) {
         if (combatantList.isEmpty() || enemyCombatantList.isEmpty()) {
             throw new IllegalStateException("Combatant lists must be initialized before running fights.");
         }
-        double friendlyLostPostHeal = 0;
-        double enemyLostPostHeal = 0;
-        double friendlyHealed = 0;
-        double enemyHealed = 0;
         setup();
+        CombatRecord combatRecord = new CombatRecord();
         for (int i = 0; i < rounds; i++) {
             roundCombat(combatantList, enemyCombatantList);
             for (Combatant combatant : combatantList) {
-                friendlyLostPostHeal+=combatant.getInitialTroopCount() - combatant.getCombatantInfo().getTroopCount();
-                friendlyHealed+=combatant.getCombatantInfo().getTroopHealed();
+                combatRecord.addFriendlyLost(combatant.getInitialTroopCount() - combatant.getCombatantInfo().getTroopCount());
+                combatRecord.addFriendlyHealed(combatant.getCombatantInfo().getTroopHealed());
                 combatant.getCombatantInfo().setTroopHealed(0);
                 combatant.setTroopCount();
             }
             for (Combatant combatant : enemyCombatantList) {
-                enemyLostPostHeal+=combatant.getInitialTroopCount() - combatant.getCombatantInfo().getTroopCount();
-                enemyHealed+=combatant.getCombatantInfo().getTroopHealed();
+                combatRecord.addEnemyLost(combatant.getInitialTroopCount() - combatant.getCombatantInfo().getTroopCount());
+                combatRecord.addEnemyHealed(combatant.getCombatantInfo().getTroopHealed());
                 combatant.getCombatantInfo().setTroopHealed(0);
                 combatant.setTroopCount();
             }
         }
-        System.out.println("Enemies Killed Per Troop Lost Pre Heal: " + ((enemyLostPostHeal+enemyHealed)/(friendlyLostPostHeal+friendlyHealed)));
-        System.out.println("Enemies Killed Per Troop Lost Post Heal: " + (enemyLostPostHeal/friendlyLostPostHeal));
-        System.out.println("does not consider heavy wounded conversion");
+        if (printCheck) {
+            System.out.println("Enemies Killed Per Troop Lost Pre Heal: " + combatRecord.getTradesPreHeal());
+            System.out.println("Enemies Killed Per Troop Lost Post Heal: " + combatRecord.getTradesPostHeal());
+            System.out.println("does not consider heavy wounded conversion");
+        }
+        return combatRecord;
     }
 
     public void runFights(int fights) {

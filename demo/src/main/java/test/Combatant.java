@@ -237,7 +237,8 @@ public class Combatant {
         for (String debuffEffectUptime : SkillDatabase.debuffEffectSet) {
             uptimeDic.put(debuffEffectUptime, enemyCombatant.isEffectActive(debuffEffectUptime));
         }
-        
+        //System.out.println(combatantInfo.getRound());
+
         uptimeDic.put("flanked",false); // add a check later for this logic only does 1v1's for now
         uptimeDic.put(">50%", combatantInfo.getTroopCount() > initialTroopCount/2);
         uptimeDic.put("<50%", combatantInfo.getTroopCount() < initialTroopCount/2);
