@@ -38,11 +38,16 @@ public class Combatant {
     private Random random = new Random();
     private int activeCount = 0;
     private int secondaryCount = 0;
-
+    private double keptAttack;
+    private double keptDefense;
+    private double keptHealth;
 
     // Constructor
     public Combatant(double attack, double defense, double health, int troopCount, String commander1Name, String commander2Name, String skill1Name, String skill2Name, String skill3Name, String skill4Name, String mountFirstSlot1Name, String mountFirstSlot2Name, String mountSecondSlot1Name, String mountSecondSlot2Name) {
         combatantInfo = new CombatantInfo(troopCount, attack, defense, health);
+        keptAttack=attack;
+        keptDefense=defense;
+        keptHealth=health;
         initialTroopCount = troopCount;
         setupNames.put("commander1", commander1Name);
         setupNames.put("commander2", commander2Name);
@@ -61,9 +66,9 @@ public class Combatant {
     public void setCombatantId(int combatantId) { this.combatantId = combatantId; }
 
     private void internalReset() {
+        
         combatantInfo.setTroopCount(initialTroopCount);
         combatantInfo.resetRound();
-        
         uptimeDic.put("heal",false);
         uptimeDic.put("absorption",false);
         uptimeDic.put("heal",false);
@@ -75,6 +80,7 @@ public class Combatant {
     }
 
     public void reset() {
+        combatantInfo = new CombatantInfo(initialTroopCount,keptAttack,keptDefense,keptHealth);
         startPhase(SkillDatabase.dummy.getCombatantInfo()); // lazy way to keep base effects for r1
         clearTempBuffs();
         internalReset();
@@ -226,6 +232,7 @@ public class Combatant {
 
     //Start Phase ticks rounds, adds actives and triggered set
     public void startPhase(CombatantInfo enemyCombatant) {
+        //if(combatantId==0) System.out.println(combatantInfo.getRage());
         this.enemyCombatant = enemyCombatant;
         // find uptimes and the bases for triggered set
         for (String damageEffectUptime : SkillDatabase.damageEffectSet) {
@@ -252,6 +259,7 @@ public class Combatant {
             else { uptimeDic.put("lessUnits",true); } // troop sizes equal in rally sims so make it random to account for reinforce variation
         }
 
+        if (Math.random()<0.5 && combatantId == 0) { uptimeDic.put("burnDamage",true); }
         //System.out.println(combatantId + " Rage " + combatantInfo.getRage() + " " + combatantInfo.getRound());
 
         if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active"); activeCount++; }
@@ -275,6 +283,7 @@ public class Combatant {
 
         for (Skill skill : allSkills){
             if (skill.shouldTrigger(combatantInfo.getRound(), uptimeDic, triggeredSet)) {
+
                 //scuffed but shouldn't error since its read in order
                 triggeredSet.add(skill.getName()); // reuse triggered set to send to the target
 

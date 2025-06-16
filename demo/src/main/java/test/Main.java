@@ -13,14 +13,22 @@ public class Main {
     
         simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 200000,
         "Sephina", "Vali",
-        "First Strike", "Berserk Killing Machine", "Furious Hack and Slash",
+        "First Strike", "Berserk Killing Machine", "Rage Leech",
         "Einherjar's Oath", "Bloodthirst Gaze", "Strangled Death", 
         "N/A", "N/A");
+
+        /*
+        simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 200000,
+        "Alf", "Heidrun",
+        "First Strike", "Bone Corroding Arrow", "Poison Arrow",
+        "Einherjar's Oath", "Bloodthirst Gaze", "N/A", 
+        "N/A", "N/A");
+        */
 
         simulate.setNewEnemyCombatant(172*(4.6), 196*(4), 169*(2), 200000,
         "Alf", "N/A",
         "N/A", "N/A", "N/A",
-        "N/A", "Soul of Fury", "Strangled Death", 
+        "N/A", "N/A", "Strangled Death", 
         "N/A", "N/A");
         //(166, 174, 198, 200000,
 
@@ -83,7 +91,7 @@ public class Main {
         "Enrage", "Bloodthirst Gaze", "N/A", 
         "N/A", "N/A"); 
         */
-        //simulate.findTrades(5, true);
+        //simulate.findTrades(10, true);
         groupRoundSimulator(simulate);
         //simulate.findTrades(500000,false);
         //simulate.runFights(100000);
@@ -113,7 +121,7 @@ public class Main {
     }
 
     public static void groupRoundSimulator(Simulator simulate) {
-        int totalTradeSamples = 30000;
+        int totalTradeSamples = 100000;
         int maxRounds = 30;
 
         for (int rounds = 1; rounds <= maxRounds; rounds++) {
@@ -124,13 +132,14 @@ public class Main {
                 CombatRecord holder = simulate.findTrades(rounds, false);
                 combatRecord.combineCombatRecord(holder);
             }
+            System.out.println(combatRecord.getTradesPreHeal());
 
-            System.out.printf(
-                "Rounds: %2d | Trades Pre-Heal: %.3f | Trades Post-Heal: %.3f%n",
-                rounds,
-                combatRecord.getTradesPreHeal(),
-                combatRecord.getTradesPostHeal()
-            );
+            //System.out.printf(
+            //    "Rounds: %2d | Trades Pre-Heal: %.3f | Trades Post-Heal: %.3f%n",
+            //    rounds,
+            //    combatRecord.getTradesPreHeal(),
+            //    combatRecord.getTradesPostHeal()
+            //);
         }
     }
 

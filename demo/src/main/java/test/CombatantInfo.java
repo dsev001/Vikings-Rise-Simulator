@@ -9,6 +9,7 @@ public class CombatantInfo {
     private int activeCounter;
     private int troopChange;
     private int troopHealed;
+    private int troopHealedHolder;
     // stats of the combatant
     private int troopCount;
     private double rage;
@@ -82,6 +83,9 @@ public class CombatantInfo {
         // tick the round
         //System.out.println(troopChange);
         //System.out.println(activeCounter);
+        troopHealedHolder=troopHealed; // holds the info from the round while resetting because of how its called
+        troopHealed=0;
+
         round++;
         troopCount+=troopChange;
         List<StatusEffect> expired = new ArrayList<>();
@@ -161,7 +165,7 @@ public class CombatantInfo {
     public boolean isEffectActive(String type) { return debuffEffectCollection.isEffectActive(type); }
     public boolean isAbsorptionActive() { return !absorptionList.isEmpty(); }
     public double getRetribution() { return retribution; }
-    public int getTroopHealed() { return troopHealed; }
+    public int getTroopHealed() { return troopHealedHolder; }
     public void setTroopHealed(int troopHealed) { this.troopHealed = troopHealed; }
     public int getBuffClear() { return buffClear; }
 
@@ -232,6 +236,7 @@ public class CombatantInfo {
         round = 1;
         rage = 0;
         activeCounter=4;
+        roundPostActiveCheck=true;
     }
 
     public void debuffClear(int debuffsToClear) {
