@@ -130,6 +130,7 @@ public class CombatantInfo {
         attackBoost -= debuffEffectCollection.getAttackDamp();
         defenseBoost -= debuffEffectCollection.getDefenseDamp();
         healthBoost -= debuffEffectCollection.getHealthDamp();
+        buffClear=0;
     }
 
     public void tickRage() {

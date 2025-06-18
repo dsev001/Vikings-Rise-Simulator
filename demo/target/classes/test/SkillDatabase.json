@@ -2073,7 +2073,7 @@
     "removable": true
   },
   {
-    "name": "Heralding Eagles Cry Direct Damage on Poison",
+    "name": "Heralding Eagle's Cry Direct Damage on Poison",
     "dependent": "N/A",
     "categorySpecification": "command",
     "effectType": "directDamage",

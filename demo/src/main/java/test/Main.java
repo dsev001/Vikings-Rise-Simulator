@@ -12,28 +12,28 @@ public class Main {
         Simulator simulate = new Simulator();
     
         simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 200000,
-        "Sephina", "Vali",
-        "First Strike", "Berserk Killing Machine", "Rage Leech",
-        "Einherjar's Oath", "Bloodthirst Gaze", "Strangled Death", 
+        "Heidrun", "N/A",
+        "Devastating Charge", "Bone Corroding Arrow", "First Strike",
+        "Berserk Killing Machine", "N/A", "N/A", 
         "N/A", "N/A");
+
+        
+        simulate.setNewEnemyCombatant(166*(5), 174*(4), 198*(2), 200000,
+        "Heidrun", "N/A",
+        "Devastating Charge", "Bone Corroding Arrow", "First Strike",
+        "N/A", "N/A", "N/A", 
+        "N/A", "N/A");
+        
+
+        //(166, 174, 198, 200000,
+
 
         /*
-        simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 200000,
-        "Alf", "Heidrun",
-        "First Strike", "Bone Corroding Arrow", "Poison Arrow",
-        "Einherjar's Oath", "Bloodthirst Gaze", "N/A", 
-        "N/A", "N/A");
-        */
-
         simulate.setNewEnemyCombatant(172*(4.6), 196*(4), 169*(2), 200000,
         "Alf", "N/A",
         "N/A", "N/A", "N/A",
         "N/A", "N/A", "Strangled Death", 
         "N/A", "N/A");
-        //(166, 174, 198, 200000,
-
-
-        /*
 
         "Sephina", "Vali",
         "First Strike", "Odin's Asylum", "Berserk Killing Machine",
@@ -91,8 +91,8 @@ public class Main {
         "Enrage", "Bloodthirst Gaze", "N/A", 
         "N/A", "N/A"); 
         */
-        //simulate.findTrades(10, true);
-        groupRoundSimulator(simulate);
+        simulate.findTrades(100000, true);
+        //groupRoundSimulator(simulate);
         //simulate.findTrades(500000,false);
         //simulate.runFights(100000);
         //System.out.println("done");

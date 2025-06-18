@@ -232,7 +232,6 @@ public class Combatant {
 
     //Start Phase ticks rounds, adds actives and triggered set
     public void startPhase(CombatantInfo enemyCombatant) {
-        //if(combatantId==0) System.out.println(combatantInfo.getRage());
         this.enemyCombatant = enemyCombatant;
         // find uptimes and the bases for triggered set
         for (String damageEffectUptime : SkillDatabase.damageEffectSet) {
@@ -259,7 +258,7 @@ public class Combatant {
             else { uptimeDic.put("lessUnits",true); } // troop sizes equal in rally sims so make it random to account for reinforce variation
         }
 
-        if (Math.random()<0.5 && combatantId == 0) { uptimeDic.put("burnDamage",true); }
+        //if (Math.random()<0.5 && combatantId == 0) { uptimeDic.put("burnDamage",true); }
         //System.out.println(combatantId + " Rage " + combatantInfo.getRage() + " " + combatantInfo.getRound());
 
         if (combatantInfo.getMainActive()) { triggeredSet.add("activeMain");triggeredSet.add("active"); activeCount++; }
@@ -317,7 +316,7 @@ public class Combatant {
                             case "bleedDamage" -> holder += bleedDamageIncrease;
                             case "lacerateDamage" -> holder += lacerateDamageIncrease;
                         }
-                        if (skill.getDependent().equalsIgnoreCase("active")) { holder += activeDealtIncrease; } 
+                        if (skill.getDependent().equalsIgnoreCase("activeMain") || skill.getDependent().equalsIgnoreCase("secondaryMain")) { holder += activeDealtIncrease; } 
                         // active dealt increases do help status damage from active skills, generic dealt increases don't though for some reason
                         debuff.setMagnitude(Scaler.scale(skill.getMagnitude()*(1+holder),combatantInfo.getAttack(),combatantInfo.getTroopCount()));
                         totalCounter.addStatusFactor(skill.getMagnitude()*(1+holder)*debuff.getDuration()); //adds status factors, done all at once since status will still do damage after changing target
@@ -350,7 +349,6 @@ public class Combatant {
     }
 
     public void endPhase() {
-        combatantInfo.tickRound();
         endRoundReset();
         //removes effects
         for (StatusEffect buffEffect : buffEffects) {
@@ -385,6 +383,7 @@ public class Combatant {
             }
         }
         buffEffects.removeAll(expired);
+        combatantInfo.tickRound();
         //for (StatusEffect buff : buffEffects) { System.out.print(buff.getName() + " "); }
         //System.out.println(" ");
 
@@ -478,11 +477,9 @@ public class Combatant {
             case "N/A" -> {}
             default -> System.out.println("Unknown category specification: " + skill.getCategorySpecification());
         }
-        if (skill.getDependent().equalsIgnoreCase("active")) { additionalDealt+= activeDealtIncrease; }
+        if (skill.getDependent().equalsIgnoreCase("activeMain") || skill.getDependent().equals("activeSecondary")) { additionalDealt+= activeDealtIncrease; }
         damage *= (1 + dealtIncrease + additionalDealt + enemyCombatant.getDamageReceivedIncrease() - enemyCombatant.getNullification());
         totalCounter.addDamageFactor(damage);
         enemyCombatant.addDamageTaken(Scaler.scale(damage, combatantInfo.getAttack(), combatantInfo.getTroopCount()));
     }
-
-
 }   
