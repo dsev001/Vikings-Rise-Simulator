@@ -10,67 +10,19 @@ public class Main {
 
         //need some kind of ui later, should add validation
         Simulator simulate = new Simulator();
-        simulate.setNewCombatant(172*(6), 196*(4), 169*(2), 200000,
-        "Heidrun", "Charlton",
-        "Devastating Charge", "Divine Blessing", "First Strike",
-        "Furious Hack and Slash", "Pain N Fury", "Bloodthirst Gaze", 
-        "N/A", "N/A");
+        simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 100000,
+        "Sephina", "Vali",
+        "Disarmament", "Silencer", "Battle Role Shift",
+        "Berserk Killing Machine", "Soul of Fury", "Strangled Death", 
+        "Divine Awe", "Divine Awe");
+        //(166, 174, 198, 200000,
 
-        simulate.setNewCombatant(172*(6), 196*(4), 169*(2), 200000,
-        "Heidrun", "Charlton",
-        "Devastating Charge", "Divine Blessing", "First Strike",
-        "Furious Hack and Slash", "Pain N Fury", "Bloodthirst Gaze", 
-        "N/A", "N/A");
-
-        simulate.setNewCombatant(172*(6), 196*(4), 169*(2), 200000,
-        "Heidrun", "Charlton",
-        "Devastating Charge", "Divine Blessing", "First Strike",
-        "Furious Hack and Slash", "Pain N Fury", "Bloodthirst Gaze", 
-        "N/A", "N/A");
-
-        simulate.setNewCombatant(172*(6), 196*(4), 169*(2), 200000,
-        "Heidrun", "Charlton",
-        "Devastating Charge", "Divine Blessing", "First Strike",
-        "Furious Hack and Slash", "Pain N Fury", "Bloodthirst Gaze", 
-        "N/A", "N/A");
-
-        simulate.setNewCombatant(172*(6), 196*(4), 169*(2), 200000,
-        "Heidrun", "Charlton",
-        "Devastating Charge", "Divine Blessing", "First Strike",
-        "Furious Hack and Slash", "Pain N Fury", "Bloodthirst Gaze", 
-        "N/A", "N/A");
-
-        simulate.setNewEnemyCombatant(172*(6), 196*(4), 169*(2), 200000,
-        "Heidrun", "Charlton",
-        "Odin's Asylum", "Divine Blessing", "First Strike",
-        "Devastating Charge", "Pain N Fury", "Bloodthirst Gaze", 
-        "N/A", "N/A");
-
-        simulate.setNewEnemyCombatant(172*(6), 196*(4), 169*(2), 200000,
-        "Heidrun", "Charlton",
-        "Odin's Asylum", "Divine Blessing", "First Strike",
-        "Devastating Charge", "Pain N Fury", "Bloodthirst Gaze", 
-        "N/A", "N/A");
-
-        simulate.setNewEnemyCombatant(172*(6), 196*(4), 169*(2), 200000,
-        "Heidrun", "Charlton",
-        "Odin's Asylum", "Divine Blessing", "First Strike",
-        "Devastating Charge", "Pain N Fury", "Bloodthirst Gaze", 
-        "N/A", "N/A");
-
-        simulate.setNewEnemyCombatant(172*(6), 196*(4), 169*(2), 200000,
-        "Heidrun", "Charlton",
-        "Odin's Asylum", "Divine Blessing", "First Strike",
-        "Devastating Charge", "Pain N Fury", "Bloodthirst Gaze", 
-        "N/A", "N/A");
-
-        simulate.setNewEnemyCombatant(172*(6), 196*(4), 169*(2), 200000,
-        "Heidrun", "Charlton",
-        "Odin's Asylum", "Divine Blessing", "First Strike",
-        "Devastating Charge", "Pain N Fury", "Bloodthirst Gaze", 
-        "N/A", "N/A");
-
- 
+        simulate.setNewEnemyCombatant(166*(5), 174*(4), 198*(2), 100000,
+        "Sephina", "Vali",
+        "Disarmament", "Silencer", "Silent Invasion",
+        "Berserk Killing Machine", "Soul of Fury", "Strangled Death", 
+        "Divine Awe", "Divine Awe");
+        //(166, 174, 198, 200000,
 
         //(166, 174, 198, 200000,
 
@@ -145,7 +97,7 @@ public class Main {
         "Enrage", "Bloodthirst Gaze", "N/A", 
         "N/A", "N/A"); 
         */
-        simulate.findTrades(100000, true);
+        simulate.findTrades(1000000, true);
         //groupRoundSimulator(simulate);
         //simulate.findTrades(500000,false);
         //simulate.runFights(100000);
