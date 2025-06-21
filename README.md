@@ -28,8 +28,8 @@ Disarmament,
 Devastating Charge,
 Green Chant (works as a close estimate, should be the same when averaged out will fix later),
 Furious Hack and Slash,
-Divine Blessing (this assumes for this skill it is always active currently will add cleansing these later),
-First Strike (this assumes for this skill it is always active currently will add cleansing these later),
+Divine Blessing (assumes for just this skill it is always active currently will add cleansing these later),
+First Strike (assumes for just this skill it is always active currently will add cleansing these later),
 Battle Role Shift
 
 Mount Skills:
