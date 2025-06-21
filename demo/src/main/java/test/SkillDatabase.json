@@ -1568,7 +1568,7 @@
     "removable": false
   },
   {
-    "name": "Nullification on Counterattack",
+    "name": "High Tide Hunt Nullification on Counterattack",
     "dependent": "counterAttack",
     "categorySpecification": "counterattack",
     "effectType": "nullificationIncrease",
@@ -1582,7 +1582,7 @@
     "removable": true
   },
   {
-    "name": "Nullification Heal on Counterattack",
+    "name": "High Tide Hunt Nullification Heal on Counterattack",
     "dependent": "counterAttack",
     "categorySpecification": "counterattack",
     "effectType": "heal",

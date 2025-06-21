@@ -4,24 +4,36 @@ package test;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        //File file = new File("demo/src/main/java/test/SkillDatabase.json");
-        //System.out.println("Exists? " + file.exists());
-        //System.out.println("Absolute path: " + file.getAbsolutePath());
 
         //need some kind of ui later, should add validation
         Simulator simulate = new Simulator();
-        simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 100000,
-        "Sephina", "Vali",
-        "Disarmament", "Silencer", "Battle Role Shift",
-        "Berserk Killing Machine", "Soul of Fury", "Strangled Death", 
-        "Divine Awe", "Divine Awe");
-        //(166, 174, 198, 200000,
 
-        simulate.setNewEnemyCombatant(166*(5), 174*(4), 198*(2), 100000,
-        "Sephina", "Vali",
-        "Disarmament", "Silencer", "Silent Invasion",
-        "Berserk Killing Machine", "Soul of Fury", "Strangled Death", 
-        "Divine Awe", "Divine Awe");
+        for (int i=0; i < 5; i++) {
+
+            simulate.setNewCombatant(166*(5), 174*(5), 198*(2.2), 200000,
+            "Heidrun", "Charlton",
+            "Devastating Charge", "Divine Blessing", "First Strike",
+            "Odin's Asylum", "Pain N Fury", "Bloodthirst Gaze", 
+            "N/A", "N/A");
+
+            simulate.setNewCombatant(166*(5), 174*(5), 198*(2.2), 200000,
+            "Sephina", "Vali",
+            "First Strike", "Einherjar's Oath", "Berserk Killing Machine",
+            "Divine Blessing", "Bloodthirst Gaze", "Strangled Death", 
+            "N/A", "N/A");
+
+            simulate.setNewEnemyCombatant(166*(6), 174*(4), 198*(2.2), 200000,
+            "Heidrun", "Charlton",
+            "Devastating Charge", "Divine Blessing", "First Strike",
+            "Odin's Asylum", "Pain N Fury", "Bloodthirst Gaze", 
+            "N/A", "N/A");
+
+            simulate.setNewEnemyCombatant(166*(6), 174*(4), 198*(2.2), 200000,
+            "Sephina", "Vali",
+            "First Strike", "Einherjar's Oath", "Berserk Killing Machine",
+            "Divine Blessing", "Bloodthirst Gaze", "Strangled Death", 
+            "N/A", "N/A");
+        }
         //(166, 174, 198, 200000,
 
         //(166, 174, 198, 200000,
@@ -97,7 +109,7 @@ public class Main {
         "Enrage", "Bloodthirst Gaze", "N/A", 
         "N/A", "N/A"); 
         */
-        simulate.findTrades(1000000, true);
+        simulate.findTrades(500000, true);
         //groupRoundSimulator(simulate);
         //simulate.findTrades(500000,false);
         //simulate.runFights(100000);
