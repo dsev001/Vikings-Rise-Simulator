@@ -93,11 +93,13 @@ public class Skill {
     }
 
     public void checkTriggerDelay() {
-        if (name.contains("Devastating Charge")) { delay = -1; } // to account for a bug ingame, makes devastating charge trigger r1, r7 etc
-        else { delay = 0; }
+        delay = 0; // got patched
+        //if (name.contains("Devastating Charge")) { delay = -1; } // to account for a bug ingame, makes devastating charge trigger r1, r7 etc
+        //else { delay = 0; }
     }
 
     public boolean shouldTrigger(int round, HashMap<String, Boolean> uptimeDic, Set<String> triggeredSet) {
+        if (currentCooldown>0) { currentCooldown--; }
         if (!dependent.equalsIgnoreCase("N/A") && !triggeredSet.contains(dependent)) {return false;} //for skills triggering on other skills
         if (triggerRequirement.equals("N/A")) { return checkTrigger(round + delay); }
         try { 

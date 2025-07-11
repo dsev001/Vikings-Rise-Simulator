@@ -8,38 +8,51 @@ public class Main {
         //need some kind of ui later, should add validation
         Simulator simulate = new Simulator();
 
-        for (int i=0; i < 5; i++) {
+        for (int i=0; i < 1; i++) {
 
-            simulate.setNewCombatant(166*(5), 174*(5), 198*(2.2), 200000,
-            "Heidrun", "Charlton",
-            "Devastating Charge", "Divine Blessing", "First Strike",
-            "Odin's Asylum", "Pain N Fury", "Bloodthirst Gaze", 
-            "N/A", "N/A");
+            simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 200000,
+            "Gunnar", "Hilda",
+            "Disarmament", "Battle Role Shift", "Green Chant",
+            "Berserk Killing Machine", "Bloodthirst Gaze", "Strangled Death", 
+            "Agonizing Frost", "Divine Awe");
+            //(166, 174, 198, 200000,
 
-            simulate.setNewCombatant(166*(5), 174*(5), 198*(2.2), 200000,
+            simulate.setNewEnemyCombatant(172*(5), 196*(4), 169*(2), 200000,
             "Sephina", "Vali",
-            "First Strike", "Einherjar's Oath", "Berserk Killing Machine",
-            "Divine Blessing", "Bloodthirst Gaze", "Strangled Death", 
-            "N/A", "N/A");
+            "Disarmament", "Silencer", "Silent Invasion",
+            "Einherjar's Oath", "Soul of Fury", "Strangled Death", 
+            "Divine Awe", "Divine Awe");
+            //(166, 174, 198, 200000,
+            //(166, 174, 198, 200000,
 
-            simulate.setNewEnemyCombatant(166*(6), 174*(4), 198*(2.2), 200000,
-            "Heidrun", "Charlton",
-            "Devastating Charge", "Divine Blessing", "First Strike",
-            "Odin's Asylum", "Pain N Fury", "Bloodthirst Gaze", 
-            "N/A", "N/A");
-
-            simulate.setNewEnemyCombatant(166*(6), 174*(4), 198*(2.2), 200000,
+            /*
+            simulate.setNewEnemyCombatant(166*(4), 174*(3.5+0.2), 198*(2.1), 200000,
             "Sephina", "Vali",
-            "First Strike", "Einherjar's Oath", "Berserk Killing Machine",
-            "Divine Blessing", "Bloodthirst Gaze", "Strangled Death", 
+            "First Strike", "Odin's Asylum", "Berserk Killing Machine",
+            "Einherjar's Oath", "Bloodthirst Gaze", "Strangled Death", 
             "N/A", "N/A");
-        }
+            */
+
+        }   
         //(166, 174, 198, 200000,
 
         //(166, 174, 198, 200000,
 
 
         /*
+        simulate.setNewCombatant(166*(5), 174*(4), 198*(2), 200000,
+        "Gunnar", "Hilda",
+        "Disarmament", "Battle Role Shift", "Green Chant",
+        "Berserk Killing Machine", "Soul of Fury", "Strangled Death", 
+        "Divine Awe", "Divine Awe");
+        //(166, 174, 198, 200000,
+
+        simulate.setNewEnemyCombatant(172*(5), 196*(4), 169*(2), 200000,
+        "Sephina", "Vali",
+        "Disarmament", "Silencer", "Silent Invasion",
+        "Einherjar's Oath", "Soul of Fury", "Strangled Death", 
+        "Agonizing Frost", "Divine Awe");
+        
         simulate.setNewEnemyCombatant(172*(4.6), 196*(4), 169*(2), 200000,
         "Alf", "N/A",
         "N/A", "N/A", "N/A",
@@ -109,7 +122,7 @@ public class Main {
         "Enrage", "Bloodthirst Gaze", "N/A", 
         "N/A", "N/A"); 
         */
-        simulate.findTrades(500000, true);
+        simulate.findTrades(300000, true);
         //groupRoundSimulator(simulate);
         //simulate.findTrades(500000,false);
         //simulate.runFights(100000);

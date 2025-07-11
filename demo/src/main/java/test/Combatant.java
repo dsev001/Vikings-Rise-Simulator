@@ -251,6 +251,8 @@ public class Combatant {
         uptimeDic.put("absorption", combatantInfo.isAbsorptionActive());
         uptimeDic.put("retribution", combatantInfo.checkRetribution());
         uptimeDic.put("evasion",combatantInfo.checkEvasion());
+        //System.out.println(combatantInfo.getRound());
+        //if (combatantId==0) { System.out.println(combatantInfo.checkEvasion()); }
         uptimeDic.put("moreUnits",combatantInfo.getTroopCount()>enemyCombatant.getTroopCount());
         uptimeDic.put("lessUnits",combatantInfo.getTroopCount()<enemyCombatant.getTroopCount());
         if (combatantInfo.getTroopCount() == enemyCombatant.getTroopCount()) {
@@ -439,7 +441,10 @@ public class Combatant {
                         combatantInfo.addHeal(Scaler.scale(effect.getMagnitude(),combatantInfo.getAttack()/enemyCombatant.getDefense(),combatantInfo.getTroopCount())); uptimeDic.put("heal",true);
                     }
                 }
-                case "rage" -> combatantInfo.addRage(effect.getMagnitude());
+                case "rage" -> { combatantInfo.addRage(effect.getMagnitude()); 
+                    //if (combatantId != 0) break;
+                    //System.out.println(effect.getMagnitude()); System.out.println(effect.getName()); System.out.println(combatantInfo.getRound());
+                }
                 case "burnDealtIncrease" -> burnDamageIncrease += effect.getMagnitude();
                 case "poisonDealtIncrease" -> poisonDamageIncrease += effect.getMagnitude();
                 case "bleedDealtIncrease" -> bleedDamageIncrease += effect.getMagnitude();
@@ -460,6 +465,7 @@ public class Combatant {
                 case "basicAttackDamage" -> basicAttackDamage += effect.getMagnitude();
                 case "counterAttackDamage" -> counterAttackDamage += effect.getMagnitude();
                 case "activeDealtIncrease" -> activeDealtIncrease += effect.getMagnitude();
+                case "immunityControl" -> combatantInfo.setImmunityControl(true);
                 default -> System.out.println("error, type " + effect.getType() + " not found");
             }
         }

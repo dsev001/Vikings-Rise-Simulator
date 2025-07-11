@@ -45,4 +45,5 @@ Fatal Chomp,
 Blessed Dew,
 Pain N Fury,
 Venom Rip
-
+Wolfnus Gnaw
+Impenetrable Scales

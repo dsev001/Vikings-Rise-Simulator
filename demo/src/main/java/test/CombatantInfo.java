@@ -29,6 +29,7 @@ public class CombatantInfo {
     private double defenseBoost;
     private double healthBoost;
     private boolean roundPostActiveCheck;
+    private boolean immunityControl;
     public int buffClear;
     // setters
     public void setRound(int round) { this.round = round; }
@@ -42,6 +43,7 @@ public class CombatantInfo {
     public void setCounterAttackDamageReduction(double counterAttackDamageReduction) { this.counterAttackDamageReduction = counterAttackDamageReduction; }
     public void setEvasion(double evasion) { this.evasion = evasion; }
     public void setRetribution(double retribution) { this.retribution = retribution; }
+    public void setImmunityControl(boolean immunityControl) { this.immunityControl = immunityControl; }
     // getters
     public int getRound() { return round; }
     public int getActiveCounter() { return activeCounter; }
@@ -61,6 +63,7 @@ public class CombatantInfo {
     public boolean getSecondaryActive() { return activeCounter == 3 && !debuffEffectCollection.isEffectActive("silence"); }
     public boolean checkEvasion() { return evasion != 0; }
     public boolean checkRetribution() { return retribution != 0; }
+    public boolean getImmunityControl() { return immunityControl; }
     public double getRetributionDamage() { double holder = retributionDamage; retributionDamage=0; return holder; }
     public double getDamageReceivedIncrease() { return debuffEffectCollection.getDamageReceivedIncrease(); }
 
@@ -85,7 +88,7 @@ public class CombatantInfo {
         //System.out.println(activeCounter);
         troopHealedHolder=troopHealed; // holds the info from the round while resetting because of how its called
         troopHealed=0;
-
+        immunityControl = false;
         round++;
         troopCount+=troopChange;
         List<StatusEffect> expired = new ArrayList<>();
@@ -214,8 +217,18 @@ public class CombatantInfo {
         troopChange += scaledHealing;
     }
 
-    public void addDebuffEffect (int id, StatusEffect statusEffect) {
+    public void addDebuffEffect(int id, StatusEffect statusEffect) {
+        if (immunityControl) {
+            String effectType = statusEffect.getType();
+            if (effectType.equals("disarm") || effectType.equals("brokenBlade") || effectType.equals("silence")) {
+                // Your logic here (e.g., return early or skip applying the debuff)
+                return;
+            }
+        }
+
         debuffEffectCollection.addEffect(id, statusEffect);
+
+        // Apply debuff logic here
     }
 
     public void addDamageDebuffEffect (int id, StatusEffect statusEffect) {

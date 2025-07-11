@@ -1,3 +1,4 @@
+
 package test;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,7 @@ public class Simulator {
         if (combatantList.isEmpty() || enemyCombatantList.isEmpty()) {
             throw new IllegalStateException("Combatant lists must be initialized before running fights.");
         }
+
         setup();
         CombatRecord combatRecord = new CombatRecord();
         for (int i = 0; i < rounds; i++) {
@@ -229,6 +231,25 @@ public class Simulator {
             combatant.endPhase();
         }
         //System.out.println("Phase ended " + friendlyCombatants.get(0).getCombatantInfo().getTroopCount());
+    }
+
+    /**
+     * Runs group round simulations for 1 to maxRounds, each with totalTradeSamples total rounds distributed evenly.
+     * Returns a List of CombatRecord, one for each round count.
+     */
+    public List<CombatRecord> groupRoundSimulator(int totalTradeSamples, int maxRounds) {
+        List<CombatRecord> results = new ArrayList<>();
+        for (int rounds = 1; rounds <= maxRounds; rounds++) {
+            CombatRecord combatRecord = new CombatRecord();
+            int numSimulations = totalTradeSamples / rounds;
+            System.out.println(rounds);
+            for (int i = 0; i < numSimulations; i++) {
+                CombatRecord holder = findTrades(rounds, false);
+                combatRecord.combineCombatRecord(holder);
+            }
+            results.add(combatRecord);
+        }
+        return results;
     }
 
     public void plotHistogram(List<Integer> values) {
