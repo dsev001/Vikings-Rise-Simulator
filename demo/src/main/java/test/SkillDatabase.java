@@ -130,13 +130,13 @@ public class SkillDatabase {
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            File skillsFile = new File("demo/src/main/java/test/SkillDatabase.json");
+            File skillsFile = new File("src/main/java/test/SkillDatabase.json");
             skills = objectMapper.readValue(
                 skillsFile,
                 objectMapper.getTypeFactory().constructCollectionType(List.class, Skill.class)
             );
             //skills reads the skill json making a list
-            File lookupFile = new File("demo/src/main/java/test/NameAssosciatedSkillDatabase.json");
+            File lookupFile = new File("src/main/java/test/NameAssosciatedSkillDatabase.json");
             List<Map<String, String>> skillDataList = objectMapper.readValue(
                 lookupFile, new TypeReference<List<Map<String, String>>>() {}
             );

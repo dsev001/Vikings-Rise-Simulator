@@ -63,7 +63,7 @@ public class Skill {
     public static Skill loadFromJsonByName(String skillName) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            File file = new File("demo/src/main/java/test/SkillDatabase.json");
+            File file = new File("src/main/java/test/SkillDatabase.json");
             List<Skill> skills = objectMapper.readValue(
                     file,
                     objectMapper.getTypeFactory().constructCollectionType(List.class, Skill.class)
